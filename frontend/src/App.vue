@@ -1,11 +1,22 @@
 <template>
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
-  <router-view/>
+<div class="flex h-screen">
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <Header />
+    <div class="flex h-full">
+      <SideBar />
+      <router-view/>
+      </div>
+  </div>
+</div>
 </template>
 
-<style>
-
-</style>
+<script>
+import SideBar from './components/ui/SideBar/SideBar'
+import Header from './components/ui/Header/Header'
+export default {
+    components: {
+    SideBar,
+    Header,
+  },
+}
+</script>

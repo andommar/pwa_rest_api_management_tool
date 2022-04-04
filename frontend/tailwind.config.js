@@ -9,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#202225',
-        secondary: '#5865f2',
+        primary: '#4831D4',
+        secondary: '#CCF381',
         gray: colors.gray,
         gray: {
           900: '#202225',
@@ -22,6 +22,11 @@ module.exports = {
           200: '#ebedef',
           100: '#f2f3f5',
         }
+      },
+      flex: {
+        '1/3': '1 1 33%',
+        '1/4': '1 1 25%',
+        '1/2': '1 1 50%',
       }
     },
   },

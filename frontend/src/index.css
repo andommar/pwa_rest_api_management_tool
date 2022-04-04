@@ -14,11 +14,11 @@
         cursor-pointer;
     }
     .sidebar-nav{
-        @apply overflow-y-auto h-screen w-52 py-4 px-3 bg-gray-50 dark:bg-gray-800;
+        @apply overflow-y-auto h-screen w-52 py-4 px-3 bg-primary dark:bg-gray-800;
     }
     .sidebar-a{
         @apply flex items-center p-2 text-base font-normal
-        text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700;
+        text-secondary rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700;
     }
 
 }

@@ -1,7 +1,7 @@
 const Header = () => {
     return (
-        <header class="flex justify-end items-center p-2 bg-gray-50 dark:bg-gray-800">
-            <div class="flex">User</div>
+        <header class="flex justify-end items-center p-2 bg-primary dark:bg-gray-800">
+            <div class="text-secondary">User</div>
         </header>
     )
 }
