@@ -1,6 +1,5 @@
 <template>
   <div class="project-list">
-      <div class="grid grid-cols-2"></div>
       <div v-for="item in state.projects" :key="item._id">
           <SingleProject :project='item' />
       </div>
