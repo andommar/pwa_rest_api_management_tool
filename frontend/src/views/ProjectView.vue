@@ -93,14 +93,18 @@
 
 <script>
 import { onMounted } from '@vue/runtime-core'
-import taskcrud from '../modules/taskcrud'
+import projectcrud from '../modules/projectcrud'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   setup() {
-    const {state, getAllTasks} = taskcrud()
+    const router = useRouter()
+    const route = useRoute()
+    const id = route.params.id
+    const {state, getProjectTasks} = projectcrud()
 
   onMounted(()=> {
-        getAllTasks()
+        getProjectTasks()
     })
     return {state}
   }

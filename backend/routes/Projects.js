@@ -51,7 +51,7 @@ router.put('/update/:id', async (req, res) => {
 
 //Getter by id
 router.get('/get/:id/tasks', async (req, res) => {
-    const t = await Project.findById({ _id: req.params.id })
+    const t = await Project.findById({ _id: req.params.id }, )
     .populate("tasks")
     .select("tasks")
     res.json(t)

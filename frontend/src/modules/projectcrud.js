@@ -11,7 +11,8 @@ const getProjects = () => {
 
     const state = ref({
         newProject:'',
-        projects: {}
+        projects: {},
+        tasks: {}
     })
 
 
@@ -80,6 +81,21 @@ const getProjects = () => {
         }
     }
 
+    //fetch tasks from a project and delete the project id that moongoose returns
+    const getProjectTasks = async() =>{
+        try {
+            fetch("http://localhost:3000/projects/get/"+projectId.value+"/tasks")
+            .then(res => res.json())
+            .then(data => {
+               state.value.tasks = data.tasks
+               delete state.value.tasks._id
+            })
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return {
         state,
@@ -89,7 +105,8 @@ const getProjects = () => {
         getAllprojects,
         newProject,
         deleteProject,
-        editProject
+        editProject,
+        getProjectTasks
     }
 }
 
