@@ -6,7 +6,7 @@ const getTasks = () => {
     const route = useRoute();
     const router = useRouter();
 
-    const taskId = computed(()=> route.params.id)
+    const taskId = computed(()=> route.params.taskid)
 
 
     const state = ref({
@@ -69,10 +69,10 @@ const getTasks = () => {
     const task = ref({})
     const GetSpecificTask = async() =>{
         try {
-            fetch("http://localhost:3000/tasks/")
+            fetch("http://localhost:3000/tasks/get/"+taskId.value)
             .then(res => res.json())
             .then(data => {
-               task.value = data.filter( task => task._id === taskId.value) //value because we work with refs
+               task.value = data//value because we work with refs
             })
         }
         catch (error) {
