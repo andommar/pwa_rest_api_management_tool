@@ -1,7 +1,6 @@
 <template>
 <!-- component -->
   <div class="row">
-    <Navigator />
     <div class="col-md-3 p-2">
       <div class="work-column bg-light border rounded">
         <div class="col-md-12 d-flex justify-content-center p-2">

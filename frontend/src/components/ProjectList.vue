@@ -1,8 +1,11 @@
 <template>
   <div class="project-list">
-      <div v-for="item in state.projects" :key="item._id">
-          <SingleProject :project='item' />
-      </div>
+    <router-link :to="{name: 'new project'}">
+        <button class="btn btn-light rounded mx-1 btn-outline-secondary">New project</button>
+    </router-link>
+    <div v-for="item in state.projects" :key="item._id">
+        <SingleProject :project='item' />
+    </div>
   </div>
 </template>
 

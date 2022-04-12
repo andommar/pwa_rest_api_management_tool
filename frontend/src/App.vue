@@ -6,6 +6,7 @@
   <div class="row">
     <SideBar/>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <Navigator/>  
       <router-view/>
     </main>
   </div>
@@ -15,10 +16,12 @@
 <script>
 import SideBar from './components/ui/SideBar/SideBar'
 import Header from './components/ui/Header/Header'
+import Navigator from './components/ui/Navigation/Navigator.vue'
 export default {
     components: {
     SideBar,
     Header,
+    Navigator
   },
 }
 </script>

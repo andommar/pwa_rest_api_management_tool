@@ -10,7 +10,8 @@ const getProjects = () => {
 
 
     const state = ref({
-        newProject:'',
+        newName:'',
+        newDescription: '',
         projects: {},
         tasks: {}
     })
@@ -38,7 +39,8 @@ const getProjects = () => {
                 //"auth-token": state.token --use tokens
             },
             body: JSON.stringify({ //stringify gets the data and converts it into json instance
-                name: state.value.newProject
+                name: state.value.newName,
+                description: state.value.newDescription
             })
         }
         fetch("http://localhost:3000/projects/new", requestOptions)

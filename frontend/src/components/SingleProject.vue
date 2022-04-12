@@ -25,7 +25,7 @@
                                 {{ project.name }}
                                 </div>
                                 <div>
-                                {{ project.template }}
+                                {{ project.description }}
                                 </div>
                             </div>
                         </router-link>
@@ -33,7 +33,7 @@
                 </div>
             <div class="col-md-3 p-2 m-1">
                 <div>
-                    {{ project.template }}
+                    {{ project.description }}
                 </div>
                 <div>
                     Owner

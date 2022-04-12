@@ -1,6 +1,5 @@
 <template>
 <div>
-  <Navigator/>
       <div>
           <ProjectList />
       </div>
