@@ -1,6 +1,6 @@
 <template>
 <div class="row">
-    <div class="row gx-2">
+    <div class="row gx-1">
         <!-- Task description -->
         <div class="col-md-7 border border-left-0 border-light rounded ">
             <div class="col mx-2 my-3">
@@ -8,10 +8,10 @@
             </div>
             <!-- Buttons -->
             <div class="d-flex m-2">
-                <button class="btn btn-light rounded mx-1 btn-outline-secondary">Edit</button>
-                <button class="btn btn-light rounded mx-1 btn-outline-secondary">Assign</button>
-                <button class="btn btn-light rounded mx-1 btn-outline-secondary">Ressolve issue</button>
-                <button class="btn btn-light rounded mx-1 btn-outline-secondary">Close issue</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Edit</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Assign</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Ressolve issue</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Close issue</button>
             </div>
 
             <!-- Details section -->
@@ -61,7 +61,7 @@
             </div>
             <!-- Attachments section-->
             <!-- Activity section -->
-            <div>
+            <div class="mx-2 my-4">
                 <div class="col">
                     <h5>Activiy</h5>
                 </div>
@@ -79,7 +79,7 @@
         </div>
 
         <!-- Right card -->
-        <div class="col-md-3 border border-left-0 border-light rounded offset-1">
+        <div class="col-md-4 border border-left-0 border-light rounded offset-1 mx-2">
             <!-- Task status -->
             <div class="my-4">
                 <div class="col mx-2 my-2">
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col m-2 d-flex">
                     <div class="p-2">
-                        <div class="bg-info p-2 text-white rounded">Done</div>
+                        <div class="bg-info p-2 text-white rounded">{{ task.taskKanbanStatus }}</div>
                     </div>
                     <div class="p-2">
                         <div class="dropdown">
@@ -103,9 +103,6 @@
                         </div>
                     </div>
 
-                </div>
-                <div class="col mx-2">
-                    <p>{{task.description}}</p>
                 </div>
             </div>
 
@@ -134,35 +131,44 @@
                 </div>
                 <div class="col mx-2 d-flex align-items-center my-1">
                     <!-- Estimated -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="font-weight-bold">Estimated:</div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                         </div>
                     </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
+                    </div>
                 </div>
                 <div class="col mx-2 d-flex align-items-center my-1">
                     <!-- Remaining -->
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="font-weight-bold">Remaining:</div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                         </div>
+                    </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
                     </div>
                 </div>
                 <div class="col mx-2 d-flex align-items-center my-1">
-                    <!-- Remaining -->
-                    <div class="col-md-4">
+                    <!-- Logged -->
+                    <div class="col-md-3">
                         <div class="font-weight-bold">Logged:</div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                         </div>
+                    </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
                     </div>
                 </div>
             </div>

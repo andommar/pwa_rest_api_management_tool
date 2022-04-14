@@ -6,8 +6,8 @@
         <div class="col-md-12 d-flex justify-content-center p-2">
           <h4>Backlog</h4>
         </div>
-        <div v-for="task in state.tasks" :key="task._id">
-          <div v-if="task.status ==='Backlog'">
+        <div v-for="task in projectState.tasks" :key="task._id">
+          <div v-if="task.taskKanbanStatus ==='Backlog'">
             <div class="task-card border rounded p-2 m-2 bg-white">
               <div class="col-md-12">
                 <router-link :to="{name: 'project task', params: {projectid: projectId, taskid: task._id }} ">
@@ -57,7 +57,7 @@
         <div class="col-md-12 d-flex justify-content-center p-2">
           <h4>To do</h4>
         </div>
-        <div v-for="task in state.tasks" :key="task._id">
+        <div v-for="task in projectState.tasks" :key="task._id">
           <div v-if="task.status === 'To Do'">
             <div class="task-card border rounded p-2 m-2 bg-white">
               <div class="col-md-12">
@@ -103,12 +103,12 @@ import Navigator from '../components/ui/Navigation/Navigator.vue'
 export default {
   components: {Navigator},
   setup() {
-    const {state, projectId, getProjectTasks} = projectcrud()
+    const {projectState, projectId, getProjectTasks} = projectcrud()
 
   onMounted(()=> {
         getProjectTasks()
     })
-    return {state, projectId}
+    return {projectState, projectId}
   }
 }
 </script>
