@@ -12,8 +12,17 @@ router.get('/', async (req, res) => {
 
 //Create new Project
 router.post('/new', async (req, res) => {
+    
+    if(req.params.projectLeader) {
+        if(mongoose.Types.ObjectId.isValid(req.params.projectLeader)) {
+            const projectLeaderId = mongoose.Types.ObjectId(req.params.projectLeader)
+            req.params.projectLeader = projectLeaderId;
+        }
+    }
     const newProject = new Project(
-        req.body //What the vue app is sending throgh the routes
+        req.body//What the vue app is sending throgh the routes
+        
+
         // {
         //     name: "Project test",
         //     description: "A long description text",
@@ -47,6 +56,14 @@ router.put('/update/:id', async (req, res) => {
         // }
     )
     res.json(tUpdate)
+})
+
+//Getter by id
+router.get('/get/:id/tasks', async (req, res) => {
+    const t = await Project.findById({ _id: req.params.id }, )
+    .populate("projectTasks")
+    .select("projectTasks")
+    res.json(t)
 })
 
 

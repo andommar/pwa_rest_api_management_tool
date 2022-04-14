@@ -1,15 +1,17 @@
 <template>
+<div>
+      <div>
+          <ProjectList />
+      </div>
+</div>
 
 
-      <main class="flex flex-col w-full bg-white overflow-x-hidden overflow-y-auto mb-14">
-        <div class="flex justify-around">
           <!-- Input -->
           <!-- <input type="text" placeholder="Project" v-model="state.newProject">
           <br>
           <span>Test: {{ state.newProject }}</span>
           <button @click="newProject()">New project - static</button>  -->
 
-          <ProjectList />
           <!-- <div v-for="project in state.projects" :key="project._id">
             <router-link :to="{name: 'project single', params: {id: project._id}}">
               <h4>
@@ -25,15 +27,13 @@
               <br>
               <br>
           </div> -->
-        </div>
-      </main>
+
 
 </template>
 
 <script>
 // @ is an alias to /src
-import SideBar from '../components/ui/SideBar/SideBar'
-import Header from '../components/ui/Header/Header'
+import Navigator from '../components/ui/Navigation/Navigator.vue'
 import Card from "../components/Card.vue"
 import {onMounted} from 'vue'
 import projectcrud from '../modules/projectcrud'
@@ -42,8 +42,7 @@ import ProjectList from '../components/ProjectList.vue'
 export default {
   name: 'HomeView',
   components: {
-    SideBar,
-    Header,
+    Navigator,
     Card,
     ProjectList
   },

@@ -9,9 +9,12 @@ const getProjects = () => {
     const projectId = computed(()=> route.params.id)
 
 
-    const state = ref({
-        newProject:'',
-        projects: {}
+    const projectState = ref({
+        // newName:'',
+        // newDescription: '',
+        newProject: {newName:'', newDescription:'', newTotalHours:'', newProjectLeader:''},
+        projects: {},
+        tasks: {}
     })
 
 
@@ -20,7 +23,7 @@ const getProjects = () => {
             await fetch("http://localhost:3000/projects")
             .then(res => res.json())
             .then(data =>{
-                state.value.projects = data
+                projectState.value.projects = data
             })
         }
         catch(error) {
@@ -28,6 +31,10 @@ const getProjects = () => {
         }
     }
 
+    const showVariables = () =>{
+        console.log(projectState.value.newProject)
+        console.log(projectState.value.newProject.newProjectLeader)
+    }
     const newProject = () => {
         const requestOptions = {
             method: "POST",
@@ -37,7 +44,10 @@ const getProjects = () => {
                 //"auth-token": state.token --use tokens
             },
             body: JSON.stringify({ //stringify gets the data and converts it into json instance
-                name: state.value.newProject
+                name: projectState.value.newProject.newName,
+                description: projectState.value.newProject.newDescription,
+                projectTotalHoursAllocated: projectState.value.newProject.newTotalHours,
+                projectLeader: projectState.value.newProject.newProjectLeader
             })
         }
         fetch("http://localhost:3000/projects/new", requestOptions)
@@ -56,7 +66,7 @@ const getProjects = () => {
                 //"auth-token": state.token --use tokens
             },
             body: JSON.stringify({ //stringify gets the data and converts it into json instance
-                name: state.value.newProject,
+                name: projectState.value.newProject,
                 // todo: state.value.newTodoItem
             })
         }
@@ -80,16 +90,33 @@ const getProjects = () => {
         }
     }
 
+    //fetch tasks from a project and delete the project id that moongoose returns
+    const getProjectTasks = async() =>{
+        try {
+            fetch("http://localhost:3000/projects/get/"+projectId.value+"/tasks")
+            .then(res => res.json())
+            .then(data => {
+               projectState.value.tasks = data.projectTasks
+               delete projectState.value.tasks._id
+            })
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return {
-        state,
+        projectState,
         project,
         projectId,
         GetSpecificProject,
         getAllprojects,
         newProject,
         deleteProject,
-        editProject
+        editProject,
+        getProjectTasks,
+        showVariables
     }
 }
 

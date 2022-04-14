@@ -1,11 +1,14 @@
 <template>
-<div class="flex h-screen">
-  <div class="flex-1 flex flex-col overflow-hidden">
-    <Header />
-    <div class="flex h-full">
-      <SideBar />
+<div class="container-fluid">
+  <div class="row">
+    <Header/>
+  </div>
+  <div class="row">
+    <SideBar/>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <Navigator/>  
       <router-view/>
-      </div>
+    </main>
   </div>
 </div>
 </template>
@@ -13,10 +16,12 @@
 <script>
 import SideBar from './components/ui/SideBar/SideBar'
 import Header from './components/ui/Header/Header'
+import Navigator from './components/ui/Navigation/Navigator.vue'
 export default {
     components: {
     SideBar,
     Header,
+    Navigator
   },
 }
 </script>

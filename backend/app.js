@@ -36,6 +36,8 @@ const ProjectsRoute = require ('./routes/Projects');
 app.use('/projects', ProjectsRoute)
 const UsersRoute = require ('./routes/Users');
 app.use('/users', UsersRoute)
+const TasksRoute = require ('./routes/Tasks');
+app.use('/tasks', TasksRoute)
 
 //start server, 8080 is used by vue
 app.listen(3000, () => {

@@ -1,0 +1,206 @@
+<template>
+<div class="row">
+    <div class="row gx-1">
+        <!-- Task description -->
+        <div class="col-md-7 border border-left-0 border-light rounded ">
+            <div class="col mx-2 my-3">
+                <h3>{{task.title}}</h3>
+            </div>
+            <!-- Buttons -->
+            <div class="d-flex m-2">
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Edit</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Assign</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Ressolve issue</button>
+                <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Close issue</button>
+            </div>
+
+            <!-- Details section -->
+            <div class="mx-2 my-4">
+                <div class="col">
+                    <h4> Details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div>Priority:</div>
+                    </div>
+                    <div class="col-6">
+                        High
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div>Created:</div>
+                    </div>
+                    <div class="col-6">
+                        05/Jun/2022 7:20pm
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div>Labels:</div>
+                    </div>
+                    <div class="col-6">
+                        Bug
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div>Type:</div>
+                    </div>
+                    <div class="col-6">
+                        Marketing and sales
+                    </div>
+                </div>
+            </div>
+            <!-- Description section -->
+            <div class="col m-2">
+                <h5>Description</h5>
+            </div>
+            <div class="col mx-2">
+                <p>{{task.description}}</p>
+            </div>
+            <!-- Attachments section-->
+            <!-- Activity section -->
+            <div class="mx-2 my-4">
+                <div class="col">
+                    <h5>Activiy</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <img src='../../public/images/avatars/dog-avatar.png' alt="asignee-avatar" class="img-fluid user-avatar">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="border rounded px-2">
+                            <p>Add a comment...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right card -->
+        <div class="col-md-4 border border-left-0 border-light rounded offset-1 mx-2">
+            <!-- Task status -->
+            <div class="my-4">
+                <div class="col mx-2 my-2">
+                    <h5>Status</h5>
+                </div>
+                <div class="col m-2 d-flex">
+                    <div class="p-2">
+                        <div class="bg-info p-2 text-white rounded">{{ task.taskKanbanStatus }}</div>
+                    </div>
+                    <div class="p-2">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Backlog</a></li>
+                            <li><a class="dropdown-item" href="#">To Do</a></li>
+                            <li><a class="dropdown-item" href="#">In progress</a></li>
+                            <li><a class="dropdown-item" href="#">Done</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Users section -->
+            <div class="my-4">
+                <div class="col mx-2 my-2">
+                    <h5>People</h5>
+                </div>
+                <div class="col mx-2 my-1 d-flex align-items-center">
+                    <img src='../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
+                    <div class="px-2">Asignee:</div>
+                    <div class="px-2">John Who</div>
+                </div>
+                <div class="col mx-2 my-1 d-flex align-items-center">
+                    <img src='../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
+                    <div class="px-2">Reporter:</div>
+                    <div class="px-2">Bubba gum</div>
+                </div>
+            </div>
+
+
+            <!-- Time tracking section -->
+            <div class="my-4">
+                <div class="col mx-2 my-2">
+                    <h5>Time tracking</h5>
+                </div>
+                <div class="col mx-2 d-flex align-items-center my-1">
+                    <!-- Estimated -->
+                    <div class="col-md-3">
+                        <div class="font-weight-bold">Estimated:</div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
+                    </div>
+                </div>
+                <div class="col mx-2 d-flex align-items-center my-1">
+                    <!-- Remaining -->
+                    <div class="col-md-3">
+                        <div class="font-weight-bold">Remaining:</div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
+                    </div>
+                </div>
+                <div class="col mx-2 d-flex align-items-center my-1">
+                    <!-- Logged -->
+                    <div class="col-md-3">
+                        <div class="font-weight-bold">Logged:</div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mx-4">
+                        <div>{{ task.hoursUsed }} h</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+</template>
+
+<script>
+import { onMounted } from '@vue/runtime-core'
+import taskcrud from '../modules/taskcrud'
+import Navigator from '../components/ui/Navigation/Navigator.vue'
+export default {
+    components: {Navigator},
+    setup(){
+        const {GetSpecificTask, task} = taskcrud();
+
+        onMounted(() => {
+            GetSpecificTask();
+        })
+        return {task}
+    }
+}
+</script>
+
+<style>
+.user-avatar{
+    height: 36px;
+    width: auto;
+}
+</style>

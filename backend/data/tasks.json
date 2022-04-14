@@ -1,0 +1,23 @@
+[
+    {
+    "title": "New navbar" ,
+    "description": "Navbar for frontpage" ,
+    "hoursAllocated": "14" ,
+    "hoursUsed": "3" ,
+    "taskKanbanStatus": "Backlog" ,
+    "is_closed": false ,
+    // "taskMembers": "" ,
+    "taskReporter": "62569bafaeee9581f89f0dac" ,
+    "taskAsignee": "62434c3064150a62a139657a" 
+    },
+    {
+    "title": "Change banner front page" ,
+    "description": "Change banner front page" ,
+    "hoursAllocated": "3" ,
+    "hoursUsed": "0" ,
+    "taskKanbanStatus": "Backlog" ,
+    "is_closed": false ,
+    "taskReporter": "62569bafaeee9581f89f0dac" ,
+    "taskAsignee": "62434c3064150a62a139657a" 
+    }
+]

@@ -13,14 +13,8 @@ router.get('/', async (req, res) => {
 //Create new User
 router.post('/new', async (req, res) => {
     const newUser = new User(
-        //req.body //What the vue app is sending throgh the routes
-        {
-            name: "User",
-            surname: "Test",
-            password: "1234567",
-            email: "test@gmail.com",
-            role: "Web developer"
-        }
+        req.body //What the vue app is sending throgh the routes
+
     );
     const savedUser = await newUser.save() //saving data to DB
     res.json(savedUser)
