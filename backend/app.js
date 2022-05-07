@@ -3,6 +3,9 @@ const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 
+require ("dotenv").config();
+
+
 //create out express app
 const app = express()
 
@@ -38,8 +41,15 @@ const UsersRoute = require ('./routes/Users');
 app.use('/users', UsersRoute)
 const TasksRoute = require ('./routes/Tasks');
 app.use('/tasks', TasksRoute)
+const AuthRoute = require ('./routes/auth');
+app.use('/user', AuthRoute)
+
 
 //start server, 8080 is used by vue
-app.listen(3000, () => {
-    console.log("Listening at port 3000");
+const PORT = process.env.PORT || 3000;
+const SECRET = process.env.TOKEN_SECRET;
+
+app.listen(PORT, function() {
+    console.log("Server is running on port: " +PORT);
+    console.log("Server secret: " +SECRET);
 })
