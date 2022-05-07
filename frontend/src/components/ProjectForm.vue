@@ -19,6 +19,14 @@
         <InputDropdownForm 
             v-model="projectState.newProject.newProjectLeader"/>
         
+        <Multiselect
+              v-model="value"
+                mode="tags"
+                :close-on-select="false"
+                :searchable="true"
+                :create-option="true"
+            :options="userState.valueUsers"
+        />
 
         <div class="form-group">
             <div class="form-check">
@@ -34,20 +42,39 @@
 </template>
 
 <script>
+import Multiselect from '@vueform/multiselect'
 import projectcrud from '../modules/projectcrud'
 import InputField from '../components/Form/InputField.vue'
 import InputDropdownForm from '../components/Form/InputDropdownForm.vue'
+import usercrud from '../modules/usercrud'
+import { onMounted, ref } from '@vue/runtime-core'
+
 export default {
-    components: {InputField, InputDropdownForm},
+    components: {InputField, InputDropdownForm, Multiselect},
     setup(){
+        const value = ref([])
+
+        // const options = userState.value.users
+        const options2 = ref([    { value: 'batman', label: 'Batman' },
+        { value: 'robin', label: 'Robin' },
+        { value: 'joker', label: 'Joker' },])
         const {projectState, newProject, showVariables} = projectcrud()
 
-        return {projectState, newProject, showVariables}
+
+        const {userState, getAllUsers} = usercrud()
+        const options = ref([userState.value.valueUsers])
+        console.log(options.value)
+        onMounted(() => {
+            getAllUsers();
+        })
+
+
+
+
+        return {projectState, newProject, showVariables, userState, value, options}
     }
 
 }
 </script>
 
-<style>
-
-</style>
+<style src="@vueform/multiselect/themes/default.css"></style>

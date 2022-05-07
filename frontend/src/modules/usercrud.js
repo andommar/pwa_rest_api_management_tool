@@ -11,7 +11,8 @@ const getUsers = () => {
 
     const userState = ref({
         newUser:'',
-        users: {}
+        users: {},
+        valueUsers: {}
     })
 
 
@@ -21,6 +22,9 @@ const getUsers = () => {
             .then(res => res.json())
             .then(data =>{
                 userState.value.users = data
+                userState.value.valueUsers = data.map(({_id, name, surname})=>({"value": _id, "label": name+" "+surname}))
+                // console.log(newFormat)
+                // console.log(data)
             })
         }
         catch(error) {

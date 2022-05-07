@@ -11,14 +11,14 @@ router.get('/', async (req, res) => {
 //-------------------------
 
 //Create new User
-router.post('/new', async (req, res) => {
-    const newUser = new User(
-        req.body //What the vue app is sending throgh the routes
+// router.post('/new', async (req, res) => {
+//     const newUser = new User(
+//         req.body //What the vue app is sending throgh the routes
 
-    );
-    const savedUser = await newUser.save() //saving data to DB
-    res.json(savedUser)
-})
+//     );
+//     const savedUser = await newUser.save() //saving data to DB
+//     res.json(savedUser)
+// })
 //Getter by id
 router.get('/get/:id', async (req, res) => {
     const t = await User.findById({ _id: req.params.id })
