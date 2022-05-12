@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {verifyToken} = require("../validation");
 const task = require('../models/Task')
 
 //Get all tasks routes
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
 //-------------------------
 
 //Create new task
-router.post('/new', async (req, res) => {
+router.post('/new',verifyToken, async (req, res) => {
     const newtask = new task(
         req.body //What the vue app is sending throgh the routes
         // {
@@ -29,13 +30,13 @@ router.get('/get/:id', async (req, res) => {
     res.json(t)
 })
 //Delete by id
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', verifyToken, async (req, res) => {
     const tDelete = await task.findByIdAndDelete({ _id: req.params.id })
     res.json(tDelete)
 })
 
 //Update a task by id
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', verifyToken, async (req, res) => {
     const tUpdate = await task.updateOne(
         { _id: req.params.id },
 
