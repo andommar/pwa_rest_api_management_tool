@@ -27,6 +27,10 @@ router.post('/new',verifyToken, async (req, res) => {
 //Getter by id
 router.get('/get/:id', async (req, res) => {
     const t = await task.findById({ _id: req.params.id })
+    .populate("taskReporter","-password")
+    .populate("taskAsignee", "-password")
+    .populate("taskMembers", "-password")
+    // .select("projectTasks")
     res.json(t)
 })
 //Delete by id

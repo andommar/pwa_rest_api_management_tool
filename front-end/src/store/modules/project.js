@@ -103,21 +103,20 @@ export default ({
                 console.log(error)
             }
         },
-        async updateProjectTask ({commit}, tasks, projectId){
+        async updateProjectTask ({commit}, params){
             try {
                 const localToken = localStorage.getItem('token')
-                console.log('localUser', localToken)
                 const requestOptions = {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         "Content-type": "application/json",
                         "auth-token": localToken
                     },
                     body: JSON.stringify({
-                        projectTasks: tasks
+                        projectTasks: params.tasksID
                     })
                 }
-                const res = await fetch('http://localhost:3000/projects/update/'+projectId, requestOptions)
+                const res = await fetch("http://localhost:3000/projects/update/"+params.id, requestOptions)
                 const data = res.json()
                 console.log(data)
             } catch (error) {

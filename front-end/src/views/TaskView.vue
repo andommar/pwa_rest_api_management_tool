@@ -112,71 +112,11 @@
                     </div>
 
                     <!-- Users section -->
-                    <div class="my-4">
-                        <div class="col mx-2 my-2">
-                            <h5>People</h5>
-                        </div>
-                        <div class="col mx-2 my-1 d-flex align-items-center">
-                            <img src='../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
-                            <div class="px-2">Asignee:</div>
-                            <div class="px-2">John Who</div>
-                        </div>
-                        <div class="col mx-2 my-1 d-flex align-items-center">
-                            <img src='../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
-                            <div class="px-2">Reporter:</div>
-                            <div class="px-2">Bubba gum</div>
-                        </div>
-                    </div>
-
+                    <TaskUserSection />
 
                     <!-- Time tracking section -->
-                    <div class="my-4">
-                        <div class="col mx-2 my-2">
-                            <h5>Time tracking</h5>
-                        </div>
-                        <div class="col mx-2 d-flex align-items-center my-1">
-                            <!-- Estimated -->
-                            <div class="col-md-3">
-                                <div class="font-weight-bold">Estimated:</div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-md-2 mx-4">
-                                <div>{{ task.hoursUsed }} h</div>
-                            </div>
-                        </div>
-                        <div class="col mx-2 d-flex align-items-center my-1">
-                            <!-- Remaining -->
-                            <div class="col-md-3">
-                                <div class="font-weight-bold">Remaining:</div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-md-2 mx-4">
-                                <div>{{ task.hoursUsed }} h</div>
-                            </div>
-                        </div>
-                        <div class="col mx-2 d-flex align-items-center my-1">
-                            <!-- Logged -->
-                            <div class="col-md-3">
-                                <div class="font-weight-bold">Logged:</div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-md-2 mx-4">
-                                <div>{{ task.hoursUsed }} h</div>
-                            </div>
-                        </div>
-                    </div>
+                    <TaskTimeTracking />
+
                 </div>
             </div>
         </div>
@@ -189,13 +129,17 @@
 import  { useRoute } from 'vue-router'
 import Header from '../components/ui/Header.vue'
 import SideBar from '../components/ui/SideBar.vue'
+import TaskUserSection from '../components/Task/taskUserSection.vue'
+import TaskTimeTracking from '../components/Task/taskTimeTracking.vue'
 import {useStore} from 'vuex'
 import { onMounted } from '@vue/runtime-core'
 import { ref } from 'vue'
 export default {
     components:{
         Header,
-        SideBar
+        SideBar,
+        TaskUserSection,
+        TaskTimeTracking
     },
     setup(){
         const route = useRoute()
@@ -206,6 +150,7 @@ export default {
         onMounted(async () =>{
             await store.dispatch('fetchTask', taskId)
             task.value = store.getters.getTask
+            console.log(task.value)
         })
 
         return {task}

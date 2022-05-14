@@ -6,9 +6,10 @@
           <div v-for="task in tasks" :key="task._id">
             <TaskCard :task='task'/>
           </div>
-          <router-link :to="{name: 'newtask', params:{status: columnStatus, projectId: projectId, tasksArr: JSON.stringify(tasks)}}">
+          <router-link :to="{name: 'newtask', params:{status: columnStatus, project: project._id, tasksArr: JSON.stringify(tasks)}}">
             <button class="btn btn-secondary btn-sm">New task</button>
           </router-link>
+          {{ project._id }}
         </div>
       </div>
     </div>
@@ -29,12 +30,11 @@ export default {
       const project = ref({})
       onMounted(async ()=>{
         project.value = await store.getters.getProject
-        console.log(project.value)
+        console.log(project.value['_id'])
       })
 
-      const projectId = project.value._id
 
-      return {projectId}
+      return {project}
     }
 }
 </script>
