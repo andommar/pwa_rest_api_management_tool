@@ -25,6 +25,34 @@ export default ({
                 console.log(error)
             }
         },
+        async updateTask ({commit}, task) {
+            try {
+                const localToken = localStorage.getItem('token')
+                const requestOptions = {
+                    method: "PUT",
+                    headers : {
+                        "Content-type": "application/json",
+                        "auth-token": localToken
+                    },
+                    body: JSON.stringify({
+                        hoursLogged: task.hoursLogged
+                    })
+                }
+                const res = await fetch("http://localhost:3000/tasks/update/"+task.id, requestOptions)
+                const data = res.json()
+                data.then(res=>{
+                    if(!res.error)
+                        commit('setTask', res)
+                })
+                // console.log(data)
+                // if(!data.error){
+                //     commit('setTask', result)
+                // }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         async newTask ({commit}, task){
             try {
                 const localToken = localStorage.getItem('token')

@@ -41,15 +41,16 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
 
 //Update a task by id
 router.put('/update/:id', verifyToken, async (req, res) => {
-    const tUpdate = await task.updateOne(
+    const tUpdate = await task.findOneAndUpdate(
         { _id: req.params.id },
 
-        { $set: req.body }
+        { $set: req.body },
         // {
         //     name: "task test updated",
         //     description: "A long description text updated",
         //     template: "Template text",
         // }
+        {returnDocument: 'after'}
     )
     res.json(tUpdate)
 })

@@ -151,13 +151,12 @@
                             <h5>Time tracking</h5>
                         </div>
                         <div class="col mx-2 d-flex flex-column my-1">
-                            <TimeProgressBar title='Estimated' class='bg-info' :hours="task.hoursAllocated"/>
-                            <TimeProgressBar title='Remaining' class='bg-warning' :hours="task.hoursRemainig"/>
-                            <TimeProgressBar title='Logged' class='bg-success' :hours="task.hoursLogged"/>
+                            <TimeProgressBar title='Estimated' class='bg-info' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursAllocated}"/>
+                            <TimeProgressBar title='Remaining' class='bg-warning' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursRemainig}"/>
+                            <TimeProgressBar title='Logged' class='bg-success' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursLogged}"/>
                         </div>
                     </div>
-                    <!-- Button trigger modal -->
-                    {{ input }}
+
 
                 </div>
             </div>
@@ -174,7 +173,7 @@ import SideBar from '../components/ui/SideBar.vue'
 import TaskUserSection from '../components/Task/taskUserSection.vue'
 import TimeProgressBar from '../components/Task/taskProgressBar.vue'
 import {useStore} from 'vuex'
-import { onMounted } from '@vue/runtime-core'
+import { computed, onMounted } from '@vue/runtime-core'
 import { ref } from 'vue'
 import FormPopUP from '../components/FormPopUp.vue'
 export default {
@@ -190,7 +189,7 @@ export default {
         const route = useRoute()
         const store = useStore()
         const taskId = route.params.id
-        const task = ref([])
+        // const task = ref([])
         const input = ref('')
 
 
@@ -198,13 +197,22 @@ export default {
         const AcceptLogHours = async () => {
             showModal.value = false
             console.log(input)
+            const params = {id: taskId, hoursLogged: input.value}
+            await store.dispatch('updateTask', params)
         }
+
+        const task = computed (() => {
+            console.log('computed',store.getters.getTask)
+            return store.getters.getTask
+        })
+
+
 
 
         onMounted(async () =>{
             await store.dispatch('fetchTask', taskId)
-            task.value = store.getters.getTask
-            console.log(task.value)
+            // task.value = store.getters.getTask
+            // console.log(task.value)
         })
 
         return {task,showModal,input,AcceptLogHours}
