@@ -10,17 +10,10 @@
           <div class="modal-body">
             <slot name="body">default body</slot>
           </div>
-          <div class="modal-body">
-              <input type="text" v-model="namePaco">
-          </div>
 
           <div class="modal-footer">
             <slot name="footer">
               default footer
-              <button
-                type="submit"
-                class="modal-default-button"
-              >OK</button>
             </slot>
           </div>
         </div>
@@ -31,10 +24,10 @@
 
 <script>
 export default {
-    props:['show', 'namePaco'],
+    props:['show'],
     setup() {
-        
-    },
+
+    }
 }
 </script>
 
@@ -57,7 +50,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

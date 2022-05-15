@@ -20,6 +20,8 @@ import { onMounted } from '@vue/runtime-core'
 import {useStore} from 'vuex'
 import TaskCard from './TaskCard.vue'
 import {ref} from 'vue'
+import  { useRoute } from 'vue-router'
+
 export default {
     props: ['columnStatus', 'tasks',],
     components: {
@@ -28,9 +30,13 @@ export default {
     setup(){
       const store = useStore()
       const project = ref({})
+      const route = useRoute()
+      const projectId = route.params.id
+
       onMounted(async ()=>{
+        
+        await store.dispatch('fetchProject', projectId)
         project.value = await store.getters.getProject
-        console.log(project.value['_id'])
       })
 
 

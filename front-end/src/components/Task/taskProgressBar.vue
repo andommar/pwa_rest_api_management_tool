@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-md-2 px-2">
-            <div> 33 h</div>
+            <div> {{ hours }}</div>
         </div>
     </div>
 </div>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-    props:['title', 'color'],
+    props:['title', 'color', 'hours'],
     inheritAttrs: false
 
 }

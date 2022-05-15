@@ -65,6 +65,37 @@
                         <p>{{task.description}}</p>
                     </div>
                     <!-- Attachments section-->
+                    <button id="show-modal" @click="showModal = true" class="btn btn-warning">Log hours</button>
+
+                        <Teleport to="body">
+                            <!-- use the modal component, pass in the prop -->
+                            <FormPopUP :show="showModal">
+                                <template #header>
+                                    <h3>Log work</h3>
+                                </template>
+
+                                <template #body>
+                                    <label for="logHours">Worked</label>
+                                <input 
+                                    type="number"
+                                    class="form-control my-2"
+                                    placeholder="Log hours"
+                                    v-model.trim="input"
+                                    >
+                                </template>
+
+                                <template #footer>
+                                <button
+                                    class="btn btn-success"
+                                    @click=AcceptLogHours
+                                >Accept</button>
+                                <button
+                                    class="btn btn-danger"
+                                    @click="showModal=false"
+                                >Cancel</button>
+                                </template>
+                            </FormPopUP>
+                        </Teleport>
                     <!-- Activity section -->
                     <div class="mx-2 my-4">
                         <div class="col">
@@ -115,7 +146,18 @@
                     <TaskUserSection />
 
                     <!-- Time tracking section -->
-                    <TaskTimeTracking />
+                    <div class="my-4">
+                        <div class="col mx-2 my-2">
+                            <h5>Time tracking</h5>
+                        </div>
+                        <div class="col mx-2 d-flex flex-column my-1">
+                            <TimeProgressBar title='Estimated' class='bg-info' :hours="task.hoursAllocated"/>
+                            <TimeProgressBar title='Remaining' class='bg-warning' :hours="task.hoursRemainig"/>
+                            <TimeProgressBar title='Logged' class='bg-success' :hours="task.hoursLogged"/>
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                    {{ input }}
 
                 </div>
             </div>
@@ -130,22 +172,34 @@ import  { useRoute } from 'vue-router'
 import Header from '../components/ui/Header.vue'
 import SideBar from '../components/ui/SideBar.vue'
 import TaskUserSection from '../components/Task/taskUserSection.vue'
-import TaskTimeTracking from '../components/Task/taskTimeTracking.vue'
+import TimeProgressBar from '../components/Task/taskProgressBar.vue'
 import {useStore} from 'vuex'
 import { onMounted } from '@vue/runtime-core'
 import { ref } from 'vue'
+import FormPopUP from '../components/FormPopUp.vue'
 export default {
     components:{
         Header,
         SideBar,
         TaskUserSection,
-        TaskTimeTracking
+        TimeProgressBar,
+        FormPopUP
     },
     setup(){
+        const showModal = ref(false)
         const route = useRoute()
         const store = useStore()
         const taskId = route.params.id
         const task = ref([])
+        const input = ref('')
+
+
+
+        const AcceptLogHours = async () => {
+            showModal.value = false
+            console.log(input)
+        }
+
 
         onMounted(async () =>{
             await store.dispatch('fetchTask', taskId)
@@ -153,7 +207,7 @@ export default {
             console.log(task.value)
         })
 
-        return {task}
+        return {task,showModal,input,AcceptLogHours}
     }
 
 }
