@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {verifyToken} = require("../validation");
 const Project = require('../models/Project')
 
 //Get all projects routes
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
 //-------------------------
 
 //Create new Project
-router.post('/new', async (req, res) => {
+router.post('/new', verifyToken, async (req, res) => {
     
     if(req.params.projectLeader) {
         if(mongoose.Types.ObjectId.isValid(req.params.projectLeader)) {
@@ -38,13 +39,13 @@ router.get('/get/:id', async (req, res) => {
     res.json(t)
 })
 //Delete by id
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', verifyToken, async (req, res) => {
     const tDelete = await Project.findByIdAndDelete({ _id: req.params.id })
     res.json(tDelete)
 })
 
 //Update a Project by id
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', verifyToken, async (req, res) => {
     const tUpdate = await Project.updateOne(
         { _id: req.params.id },
 
@@ -65,7 +66,6 @@ router.get('/get/:id/tasks', async (req, res) => {
     .select("projectTasks")
     res.json(t)
 })
-
 
 
 module.exports = router

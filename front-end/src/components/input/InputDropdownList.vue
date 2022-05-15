@@ -1,31 +1,29 @@
 <template>
     <div class="form-row">
         <div class="form-group col-md-4">
-            <label for="inputState">Team leader</label>
+            <label for="inputState">{{ label }}</label>
             <select id="inputState" class="form-control" value="modelValue" @input="$emit('update:modelValue', $event.target.value)"> 
                 <option selected>Choose...</option>
-                <option v-for="user in userState.users" :key="user._id" :value="user._id" > 
-                    {{ user.name }} {{user.surname}}
+                <option v-for="member in memberList" :key="member._id" :value="member._id" > 
+                    {{ member.name }} {{member.surname}}
                 </option>
             </select>
         </div>
     </div>
+    
 </template>
 
 <script>
-import usercrud from '../../modules/usercrud'
 import { onMounted } from '@vue/runtime-core'
 
 export default {
     name:'InputDropdownForm',
-    props: ['modelValue'],
+    props: ['modelValue', 'memberList', 'label'],
     setup(){
-        const {userState, getAllUsers} = usercrud()
 
     onMounted(() => {
-        getAllUsers();
     })
-    return {userState}
+    return {}
     }
 
 }
