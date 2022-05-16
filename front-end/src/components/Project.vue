@@ -1,20 +1,15 @@
 <template>
-    <div class="row">
-            <div class="col-md-7 m-1">
-                <div class="row">
-                    <router-link :to="{name: 'project', params: {id: project._id}}">
-                        <div class="rounded border p-4 m-2">
-                            <div>
-                            {{ project.name }}
-                            </div>
-                            <div>
-                            {{ project.description }}
-                            </div>
-                        </div>
-                    </router-link>
-                </div>
-            </div>
-        <div class="col-md-3 p-2 m-1">
+    <div class="rounded project-card p-4 m-2">
+        <div>
+            <router-link :to="{name: 'project', params: {id: project._id}}">
+                {{ project.name }}
+            </router-link>
+        </div>
+        <div>
+            {{ project.description }}
+        </div>
+    </div>
+        <!-- <div class="col-md-3 p-2 m-1">
             <div>
                 {{ project.description }}
             </div>
@@ -24,8 +19,7 @@
             <div>
                 Filter options
             </div>
-        </div>
-    </div>
+        </div> -->
 </template>
 
 <script>
@@ -35,6 +29,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.project-card{
+    border-left: 6px rgb(240,181,45) solid;
+    box-shadow: 5px 5px 3px grey;
+    background-color: white;
+    height: 180px;
+    width: 280px;
+}
+a{
+    color: black !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
 
 </style>

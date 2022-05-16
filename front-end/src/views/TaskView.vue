@@ -7,7 +7,7 @@
         <div class="row">
             <div class="row gx-1">
                 <!-- Task description -->
-                <div class="col-md-7 border border-left-0 border-light rounded ">
+                <div class="col-md-7 border border-left-0 border-light rounded bg-white">
                     <div class="col mx-2 my-3">
                         <h1>{{task.title}}</h1>
                     </div>
@@ -115,7 +115,7 @@
                 </div>
 
                 <!-- Right card -->
-                <div class="col-md-4 border border-left-0 border-light rounded offset-1 mx-2">
+                <div class="col-md-4 border border-left-0 border-light rounded offset-1 mx-2 bg-white">
                     <!-- Task status -->
                     <div class="my-4">
                         <div class="col mx-2 my-2">

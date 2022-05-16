@@ -1,5 +1,5 @@
 <template>
-  <div class="project-list">
+  <div class="d-flex flex-wrap">
     <div v-for="project in projects" :key="project._id">
         <Project :project='project' />
     </div>
