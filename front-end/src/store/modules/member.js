@@ -43,6 +43,23 @@ export default ({
                 console.log(error)
             }
         },
+        async deleteMember ({commit}, memberId) {
+            try {
+                const localToken = localStorage.getItem('token')
+                const requestOptions = {
+                    method: "DELETE",
+                    headers : {
+                        "Content-type": "application/json",
+                        "auth-token": localToken
+                    }
+                }
+                const res = await fetch("http://localhost:3000/users/delete/"+memberId, requestOptions)
+                const data = await res.json()
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
 
     },
     modules: {

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {verifyToken} = require("../validation");
 const User = require('../models/User')
 
 //Get all users routes
@@ -25,13 +26,13 @@ router.get('/get/:id', async (req, res) => {
     res.json(t)
 })
 //Delete by id
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', verifyToken, async (req, res) => {
     const tDelete = await User.findByIdAndDelete({ _id: req.params.id })
     res.json(tDelete)
 })
 
 //Update a User by id
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:id', verifyToken, async (req, res) => {
     const tUpdate = await User.updateOne(
         // { _id: req.params.id },
 

@@ -3,28 +3,28 @@
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <router-link to="/users">
                 <i class="bi bi-house-door-fill"></i>
                 <span class="mx-1" data-feather="home">Dashboard</span>
-            </a>
+            </router-link>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link to="/users">
                 <i class="bi bi-clipboard2-data-fill"></i>
                 <span class="mx-1" data-feather="file">Projects</span>
-            </a>
+            </router-link>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link to="/users">
                 <i class="bi bi-list-task"></i>
                 <span class="mx-1" data-feather="task">Tasks</span>
-            </a>
+            </router-link>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <router-link to="/users">
                 <i class="bi bi-people"></i>
                 <span class="mx-1" data-feather="users">Users</span>
-            </a>
+            </router-link>
         </li>
         </ul>
 
@@ -44,5 +44,8 @@ export default {
 }
 nav a {
     font-size: 1.2rem;
+}
+.nav-item{
+    margin: 0.7rem 0.8rem
 }
 </style>

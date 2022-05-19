@@ -6,55 +6,48 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="row">
             <div class="row gx-1">
-                <!-- Task description -->
+                <!-- Task info -->
                 <div class="col-md-7 border border-left-0 border-light rounded bg-white">
                     <div class="col mx-2 my-3">
                         <h1>{{task.title}}</h1>
                     </div>
                     <!-- Buttons -->
                     <div class="d-flex m-2">
-                        <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Edit</button>
-                        <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Assign</button>
-                        <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Ressolve issue</button>
-                        <button class="btn btn-light btn-sm rounded mx-1 btn-outline-secondary">Close issue</button>
+                        <button class="nav-button rounded mx-1"><i class="bi bi-pencil"></i> Edit</button>
+                        <button class="nav-button rounded mx-1"> <i class="bi bi-person"></i> Assign</button>
+                        <button class="nav-button rounded mx-1">Close issue</button>
+                        <button class="nav-button rounded mx-1">Stop issue</button>
+                        <div class="dropdown mx-1">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <button class="dropdown-item" type="button">Backlog</button>
+                                <button class="dropdown-item" type="button">To Do</button>
+                                <button class="dropdown-item" type="button">In progress</button>
+                                <button class="dropdown-item" type="button">Done</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Details section -->
                     <div class="mx-2 my-4">
-                        <div class="col">
-                            <h4> Details</h4>
+                        <h4> Details</h4>
+                        <div class="row">
+                            <TaskViewRowInfo class='col-2' :params="'Priority:'" />
+                            <TaskViewRowInfo class='col-3' :params="'High'" />
+                            <TaskViewRowInfo class='col-2' :params="'Progress:'" />
+                            <TaskViewRowInfo class='col-3' :params="task.taskKanbanStatus" />
                         </div>
                         <div class="row">
-                            <div class="col-3">
-                                <div>Priority:</div>
-                            </div>
-                            <div class="col-6">
-                                High
-                            </div>
+                            <TaskViewRowInfo class='col-2' :params="'Label:'" />
+                            <TaskViewRowInfo class='col-3' :params="'Bug'" />
+                            <TaskViewRowInfo class='col-2' :params="'Status:'" />
+                            <TaskViewRowInfo class='col-3' :params="'Open'" />
                         </div>
                         <div class="row">
-                            <div class="col-3">
-                                <div>Created:</div>
-                            </div>
-                            <div class="col-6">
-                                05/Jun/2022 7:20pm
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <div>Labels:</div>
-                            </div>
-                            <div class="col-6">
-                                Bug
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <div>Type:</div>
-                            </div>
-                            <div class="col-6">
-                                Marketing and sales
-                            </div>
+                            <TaskViewRowInfo class='col-2' :params="'Type:'" />
+                            <TaskViewRowInfo class='col-3' :params="'Marketing and Sales'" />
                         </div>
                     </div>
                     <!-- Description section -->
@@ -116,32 +109,25 @@
 
                 <!-- Right card -->
                 <div class="col-md-4 border border-left-0 border-light rounded offset-1 mx-2 bg-white">
-                    <!-- Task status -->
-                    <div class="my-4">
-                        <div class="col mx-2 my-2">
-                            <h5>Status</h5>
+                    <!-- Task timing -->
+                    <div class="my-4 mx-2">
+                        <div class="col my-2">
+                            <h5>Dates</h5>
                         </div>
-                        <div class="col m-2 d-flex">
-                            <div class="p-2">
-                                <div class="bg-info p-2 text-white rounded">{{ task.taskKanbanStatus }}</div>
-                            </div>
-                            <div class="p-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Backlog</a></li>
-                                    <li><a class="dropdown-item" href="#">To Do</a></li>
-                                    <li><a class="dropdown-item" href="#">In progress</a></li>
-                                    <li><a class="dropdown-item" href="#">Done</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="row">
+                            <TaskViewRowInfo class='col-3' :params="'Created:'" />
+                            <TaskViewRowInfo class='col-3' :params="'05/June/19'" />
+                        </div>
+                        <div class="row">
+                            <TaskViewRowInfo class='col-3' :params="'Updated:'" />
+                            <TaskViewRowInfo class='col-3' :params="'22/September/19'" />
+                        </div>
+                        <div class="row">
+                            <TaskViewRowInfo class='col-3' :params="'Due to:'" />
+                            <TaskViewRowInfo class='col-3' :params="'22/January/21'" />
+                        </div>
 
-                        </div>
                     </div>
-
                     <!-- Users section -->
                     <TaskUserSection />
 
@@ -176,13 +162,16 @@ import {useStore} from 'vuex'
 import { computed, onMounted } from '@vue/runtime-core'
 import { ref } from 'vue'
 import FormPopUP from '../components/FormPopUp.vue'
+import TaskViewRowInfo from '../components/Task/taskViewRowInfo.vue'
+
 export default {
     components:{
         Header,
         SideBar,
         TaskUserSection,
         TimeProgressBar,
-        FormPopUP
+        FormPopUP,
+        TaskViewRowInfo
     },
     setup(){
         const showModal = ref(false)
@@ -221,9 +210,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .user-avatar{
     height: 36px;
     width: auto;
+}
+button.nav-button{
+    background-color: rgb(226,232,240);
+    color: black;
+    border: 0px;
+    padding: 5px 10px;
+}
+button.nav-button:hover{
+    background-color:rgb(108,117,125);
+    color: white;
 }
 </style>

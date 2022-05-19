@@ -38,6 +38,16 @@ const routes = [
     path: '/newtask',
     name: 'newtask',
     component: () => import(/* webpackChunkName: "about" */ '../views/NewTask.vue')
+  },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue')
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* webpackChunkName: "about" */ '../views/UsersView.vue')
   }
 ]
 
