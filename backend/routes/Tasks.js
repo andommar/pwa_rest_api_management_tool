@@ -5,7 +5,10 @@ const task = require('../models/Task')
 
 //Get all tasks routes
 router.get('/', async (req, res) => {
-    const tasks = await task.find(); //Returns all occurrences from datbase
+    const tasks = await task.find() //Returns all occurrences from datbase
+    .populate("taskReporter","-password")
+    .populate("taskAsignee", "-password")
+    .populate("taskMembers", "-password")
     res.json(tasks)
 })
 

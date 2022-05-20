@@ -78,14 +78,8 @@
                                 </template>
 
                                 <template #footer>
-                                <button
-                                    class="btn btn-success"
-                                    @click=AcceptLogHours
-                                >Accept</button>
-                                <button
-                                    class="btn btn-danger"
-                                    @click="showModal=false"
-                                >Cancel</button>
+                                    <button class="btn btn-success" @click=AcceptLogHours>Accept</button>
+                                    <button class="btn btn-danger"  @click="showModal=false">Cancel</button>
                                 </template>
                             </FormPopUP>
                         </Teleport>

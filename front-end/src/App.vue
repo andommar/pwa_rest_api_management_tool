@@ -19,7 +19,6 @@ h1,h2,h3,h4,h5,h6{
 main {
   background-color: rgb(226,232,240);
 }
-
 .shadow-card{
     box-shadow: 5px 5px 3px grey;
 }

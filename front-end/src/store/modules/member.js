@@ -43,6 +43,31 @@ export default ({
                 console.log(error)
             }
         },
+        async updateMember ({commit}, member){
+            try {
+                console.log(member)
+                const localToken = localStorage.getItem('token')
+                const requestOptions ={
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                        "auth-token": localToken
+                    },
+                    body: JSON.stringify({
+                        name: member.name,
+                        surname: member.surname,
+                        email: member.email
+                    })
+                }
+                const res = await fetch("http://localhost:3000/users/update/"+member.id, requestOptions)
+                const data = await res.json()
+                console.log(data)
+                if(!data.error)
+                    commit('setMember', data)
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async deleteMember ({commit}, memberId) {
             try {
                 const localToken = localStorage.getItem('token')

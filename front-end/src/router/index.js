@@ -25,7 +25,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/ProjectView.vue')
   },
   {
-    path: '/project/task/:id',
+    path: '/task/:id',
     name: 'task',
     component: () => import(/* webpackChunkName: "about" */ '../views/TaskView.vue')
   },
@@ -48,6 +48,16 @@ const routes = [
     path: '/users',
     name: 'users',
     component: () => import(/* webpackChunkName: "about" */ '../views/UsersView.vue')
+  },
+  {
+    path: '/tasks',
+    name: 'tasks',
+    component: () => import(/* webpackChunkName: "about" */ '../views/TasksView.vue')
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ProjectsView.vue')
   }
 ]
 

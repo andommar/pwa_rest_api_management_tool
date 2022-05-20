@@ -33,17 +33,11 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
 
 //Update a User by id
 router.put('/update/:id', verifyToken, async (req, res) => {
-    const tUpdate = await User.updateOne(
-        // { _id: req.params.id },
+    const tUpdate = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: req.body },
+        {returnDocument: 'after'}
 
-        // { $set: req.body }
-        {
-            name: "User update",
-            surname: "Test update",
-            password: "1234567",
-            email: "test@gmail.com",
-            role: "Web developer"
-        }
     )
     res.json(tUpdate)
 })

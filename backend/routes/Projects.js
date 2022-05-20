@@ -5,7 +5,10 @@ const Project = require('../models/Project')
 
 //Get all projects routes
 router.get('/', async (req, res) => {
-    const projects = await Project.find(); //Returns all occurrences from datbase
+    const projects = await Project.find()
+    .populate("projectLeader")
+    .populate("projectMembers")
+    .populate("projectTasks")
     res.json(projects)
 })
 
