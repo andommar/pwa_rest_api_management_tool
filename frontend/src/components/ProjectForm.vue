@@ -24,6 +24,7 @@
                 mode="tags"
                 :close-on-select="false"
                 :searchable="true"
+                :multiple="true"
                 :create-option="true"
             :options="userState.valueUsers"
         />

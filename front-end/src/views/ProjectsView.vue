@@ -73,7 +73,6 @@ import {useStore} from 'vuex'
 import { computed, onMounted } from '@vue/runtime-core'
 import moment from 'moment'
 
-import {ref} from 'vue'
 export default {
     components:{
         Header,

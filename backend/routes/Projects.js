@@ -34,7 +34,11 @@ router.post('/new', verifyToken, async (req, res) => {
         // }
     );
     const savedProject = await newProject.save() //saving data to DB
-    res.json(savedProject)
+    const newSavedProject = await Project.findById({ _id: savedProject._id })
+    .populate("projectLeader")
+    .populate("projectMembers")
+    .populate("projectTasks")
+    res.json(newSavedProject)
 })
 //Getter by id
 router.get('/get/:id', async (req, res) => {

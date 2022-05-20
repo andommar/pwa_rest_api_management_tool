@@ -90,15 +90,18 @@ export default ({
                         name: project.name,
                         description: project.description,
                         // projectTasks: project.tasks
-                        // projectMembers: project.members,
+                        projectMembers: project.projectMembers,
                         projectTotalHoursAllocated: project.totalhours,
-                        projectStartDate: project.projectStartDate
-                        // projectLeader: project.leader
+                        projectStartDate: project.projectStartDate,
+                        projectEndDate: project.projectEndDate,
+                        projectLeader: project.projectLeader
                     })
                 }
                 const res = await fetch("http://localhost:3000/projects/new", requestOptions)
                 const projectDB = await res.json()
                 console.log(projectDB)
+                if(!projectDB.error)
+                    commit('setProject', projectDB)
             } catch (error) {
                 console.log(error)
             }

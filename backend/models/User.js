@@ -8,10 +8,7 @@ const UserSchema = new mongoose.Schema({
     password: {type: String, required: true, min:2, max: 255},
     email: {type: String, required: true, min:6, max: 255},
     avatar: {type: String, required: false, min:6, max: 255, default: 'https://anonymous-animals.azurewebsites.net/animal/Dinosaur'},
-    projectsAssigned:  [{
-                        project:{ type: Schema.Types.ObjectId, ref: 'project', default: null, required: false },
-                        role:{type: String, required: false, min:2, max: 255}
-    }],
+    projectsAssigned:  [{ type: Schema.Types.ObjectId, ref: 'project', default: null, required: false }],
     joined: {type: Date, required: false, default: Date.now},
     active: {type: Boolean, required: false, default: true}
 })
