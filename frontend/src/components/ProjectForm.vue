@@ -1,81 +1,92 @@
 <template>
-    <form @submit.prevent="newProject">
 
-        <InputField 
-            v-model="projectState.newProject.newName"
-            label="Project name"
-            type="text"
-        />
-        <InputField
-            v-model="projectState.newProject.newDescription"
-            label="Project description"
-            type="text"
-        />
-        <InputField
-            v-model="projectState.newProject.newTotalHours"
-            label="Project total hours"
-            type="number"
-        />
-        <InputDropdownForm 
-            v-model="projectState.newProject.newProjectLeader"/>
-        
-        <Multiselect
-              v-model="value"
-                mode="tags"
-                :close-on-select="false"
-                :searchable="true"
-                :multiple="true"
-                :create-option="true"
-            :options="userState.valueUsers"
-        />
+    
+    <label for="Project name">Project name</label>
+    <input 
+        type="text"
+        class="form-control my-2"
+        placeholder="Insert name"
+        v-model.trim="project.name"
+        >
+    <label for="Project description">Description</label>
+    <textarea 
+        class="form-control my-2"
+        placeholder="Insert description"
+        v-model.trim="project.description"
+        >
+    </textarea>
+    <label for="Project hours">Total hours</label>
 
-        <div class="form-group">
-            <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck">
-            <label class="form-check-label" for="gridCheck">
-                Check me out
-            </label>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Create new project</button>
-        <button type="button" @click="showVariables" class="btn btn-primary">Show</button>
-    </form>
+    <input 
+        type="number"
+        class="form-control my-2"
+        placeholder="Project total hours name"
+        v-model.trim="project.totalhours"
+        >
+    <label for="Project start date">Start date</label>
+
+    <input 
+        type="date"
+        class="form-control my-2"
+        placeholder="Project start date"
+        v-model.trim="project.projectStartDate"
+        >
+    <label for="Project end date">End date</label>
+
+    <input 
+        type="date"
+        class="form-control my-2"
+        placeholder="Project end date"
+        v-model.trim="project.projectEndDate"
+        >
+
+    <label for="Project leader">Project leader</label>
+    <InputDropdownList v-model="project.projectLeader" :memberList='members'/>
+
+    <label for="Project members">Project members</label>
+    <Multiselect
+            v-model="project.projectMembers"
+            mode="tags"
+            :searchable="true"
+            :multiple="true"
+            :taggable="true"
+            :options="optionsMultiselect"
+    />
+
+    <button type="submit" class="btn btn-primary">Create new project</button>
+
 </template>
 
 <script>
 import Multiselect from '@vueform/multiselect'
-import projectcrud from '../modules/projectcrud'
-import InputField from '../components/Form/InputField.vue'
-import InputDropdownForm from '../components/Form/InputDropdownForm.vue'
-import usercrud from '../modules/usercrud'
-import { onMounted, ref } from '@vue/runtime-core'
-
+import InputDropdownList from './input/InputDropdownList.vue'
+import {useStore} from 'vuex'
+import { onMounted } from '@vue/runtime-core'
+import {ref} from 'vue'
 export default {
-    components: {InputField, InputDropdownForm, Multiselect},
+    props:['project'],
+    components: {
+        InputDropdownList,
+        Multiselect
+    },
     setup(){
-        const value = ref([])
+        const store = useStore()
+        const members = ref([])
+        const optionsMultiselect = ref([])
 
-        // const options = userState.value.users
-        const options2 = ref([    { value: 'batman', label: 'Batman' },
-        { value: 'robin', label: 'Robin' },
-        { value: 'joker', label: 'Joker' },])
-        const {projectState, newProject, showVariables} = projectcrud()
-
-
-        const {userState, getAllUsers} = usercrud()
-        const options = ref([userState.value.valueUsers])
-        console.log(options.value)
-        onMounted(() => {
-            getAllUsers();
+        onMounted(async ()=>{
+            await store.dispatch('fetchMembers')
+            const data = await store.getters.getMembers
+            members.value = data
+            optionsMultiselect.value = data.map(member =>  ({"value": member._id, "label": member.name+ " " +member.surname}))
+            console.log(optionsMultiselect)
         })
 
-
-
-
-        return {projectState, newProject, showVariables, userState, value, options}
+        return {members, optionsMultiselect}
     }
-
 }
 </script>
 
-<style src="@vueform/multiselect/themes/default.css"></style>
+<style src="@vueform/multiselect/themes/default.css">
+
+</style>

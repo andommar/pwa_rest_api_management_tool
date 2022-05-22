@@ -136,7 +136,42 @@ export default ({
             } catch (error) {
                 console.log(error)
             }
+        },
+        async updateProject ({commit}, params){
+            try {
+                const localToken = localStorage.getItem('token')
 
+                const updatedProject = params.updatedProject
+                const result ={}
+
+                if(updatedProject.name)
+                    result.name= updatedProject.name
+                if(updatedProject.description)
+                    result.description= updatedProject.description
+                if(updatedProject.projectStartDate)
+                    result.projectStartDate= updatedProject.projectStartDate
+                if(updatedProject.projectEndDate)
+                    result.projectEndDate= updatedProject.projectEndDate
+
+
+                const requestOptions = {
+                    method: "PUT",
+                    headers: {
+                        "Content-type": "application/json",
+                        "auth-token": localToken
+                    },
+                    body: JSON.stringify(result)
+                }
+                const res = await fetch("http://localhost:3000/projects/update/"+params.id, requestOptions)
+                const data = res.json()
+                data.then(res=>{
+                    if(!res.error){
+                        commit('setProject', res)
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
         },
         async deleteProject ({commit}, projectId){
             try {

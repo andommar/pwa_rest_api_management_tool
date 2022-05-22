@@ -12,6 +12,7 @@ const TaskSchema = new mongoose.Schema({
     taskMembers: [{ type: Schema.Types.ObjectId, ref: 'user', default: null}],
     taskReporter: { type: Schema.Types.ObjectId, ref: 'user', default: null},
     taskAsignee: { type: Schema.Types.ObjectId, ref: 'user', default: null},
+    taskCreation:{type: Date, required: false, default: Date.now},
     taskStartDate:{type: Date, required: false, default: Date.now},
     taskEndDate:{type: Date, required: false, default: Date.now}
     // informer: {type: String, required: true, min:3, max: 255},

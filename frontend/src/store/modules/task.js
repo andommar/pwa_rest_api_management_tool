@@ -41,6 +41,44 @@ export default ({
                 console.log(error)
             }
         },
+        async updateTask ({commit}, task) {
+            try {
+                const localToken = localStorage.getItem('token')
+                const updatedTask = task.updatedTask
+                console.log('dentro',updatedTask)
+                const result ={}
+
+                if(updatedTask.title)
+                    result.title= updatedTask.title
+                if(updatedTask.description)
+                    result.description= updatedTask.description
+                if(updatedTask.hoursAllocated)
+                    result.hoursAllocated= updatedTask.hoursAllocated
+                if(updatedTask.taskStartDate)
+                    result.taskStartDate= updatedTask.taskStartDate
+                if(updatedTask.taskEndDate)
+                    result.taskEndDate= updatedTask.taskEndDate
+
+                const requestOptions = {
+                    method: "PUT",
+                    headers : {
+                        "Content-type": "application/json",
+                        "auth-token": localToken
+                    },
+                    body: JSON.stringify(
+                        result
+                    )
+                }
+                const res = await fetch("http://localhost:3000/tasks/update/"+task.id, requestOptions)
+                const data = res.json()
+                data.then(res=>{
+                    if(!res.error)
+                        commit('setTask', res)
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async updateTaskHours ({commit}, task) {
             try {
                 const localToken = localStorage.getItem('token')

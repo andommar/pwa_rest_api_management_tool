@@ -60,16 +60,14 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
 
 //Update a Project by id
 router.put('/update/:id', verifyToken, async (req, res) => {
-    const tUpdate = await Project.updateOne(
+    const tUpdate = await Project.findOneAndUpdate(
         { _id: req.params.id },
-
-        { $set: req.body }
-        // {
-        //     name: "Project test updated",
-        //     description: "A long description text updated",
-        //     template: "Template text",
-        // }
+        { $set: req.body },
+        {returnDocument: 'after'}
     )
+    .populate("projectLeader")
+    .populate("projectMembers")
+    .populate("projectTasks")
     res.json(tUpdate)
 })
 

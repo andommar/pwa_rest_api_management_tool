@@ -1,29 +1,30 @@
 <template>
-  <div class="project-list">
-    <router-link :to="{name: 'new project'}">
-        <button class="btn btn-light rounded mx-1 btn-outline-secondary">New project</button>
-    </router-link>
-    <div v-for="item in projectState.projects" :key="item._id">
-        <SingleProject :project='item' />
+  <div class="d-flex flex-wrap">
+    <div v-for="project in projects" :key="project._id">
+        <Project :project='project' />
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
-import projectcrud from '../modules/projectcrud'
-import SingleProject from '../components/SingleProject.vue'
+import { computed, onMounted } from '@vue/runtime-core'
+import Project from '../components/Project.vue'
+import { useStore } from 'vuex'
 export default {
     components: {
-        SingleProject
+        Project
     },
     setup() {
-    const {projectState, getAllprojects} = projectcrud()
+        const store = useStore()
 
-    onMounted(()=> {
-        getAllprojects()
-    })
-    return {projectState }
+        const projects = computed(() => {
+            return store.getters.getProjects
+        })
+
+        onMounted(async ()=> {
+            await store.dispatch('fetchProjects')
+        })
+        return { projects }
 
     }
 }

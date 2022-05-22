@@ -5,22 +5,21 @@
         <form
           class="text-center border border-primary p-5"
           style="margin-top:70px;height:auto;padding-top:100px !important;"
-          @submit.prevent=""
+          @submit.prevent="processLogin"
         >
           <input
-            type="text"
+            type="email"
             id="email"
             class="form-control mb-5"
             placeholder="Email"
-            v-model.trim="username"
+            v-model.trim="user.email"
           />
           <!-- Password -->
           <input
             type="password"
-            id="password"
             class="form-control mb-5"
             placeholder="Password"
-            v-model.trim="password"
+            v-model.trim="user.password"
           />
           <p>
             Dont have an account?<router-link to="/register"
@@ -28,11 +27,9 @@
             >
           </p>
           <!-- Sign in button -->
-          <center>
             <button class="btn btn-primary btn-block w-75 my-4" type="submit">
               Sign in
             </button>
-          </center>
         </form>
       </div>
     </div>
@@ -40,13 +37,21 @@
 </template>
 
 <script>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
+import {useStore} from 'vuex'
 export default {
     setup(){
-        const username = ref('')
-        const password = ref('')
+        const user = ref({email: 'projectMan@gmail.com', password: '1234567'})
+        const store = useStore()
 
-        return {username, password}
+        const processLogin = () => {
+            store.dispatch('loginUser', user.value)
+        }
+
+        // const state = computed(()=> {return store.getters.getUser})
+        // console.log(state)
+
+        return {user, processLogin}
     }
 
 }
