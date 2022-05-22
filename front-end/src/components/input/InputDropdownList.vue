@@ -6,6 +6,7 @@
                 <option v-for="member in memberList" :key="member._id" :value="member._id" > 
                     {{ member.name }} {{member.surname}}
                 </option>
+
             </select>
         </div>
     </div>

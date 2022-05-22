@@ -55,6 +55,8 @@ router.put('/update/:id', verifyToken, async (req, res) => {
         // }
         {returnDocument: 'after'}
     )
+    .populate("taskAsignee")
+    .populate("taskReporter")
     res.json(tUpdate)
 })
 

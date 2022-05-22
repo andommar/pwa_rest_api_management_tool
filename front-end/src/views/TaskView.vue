@@ -13,8 +13,8 @@
                     </div>
                     <!-- Buttons -->
                     <div class="d-flex m-2">
-                        <button class="nav-button rounded mx-1"><i class="bi bi-pencil"></i> Edit</button>
-                        <button class="nav-button rounded mx-1"> <i class="bi bi-person"></i> Assign</button>
+                        <button class="nav-button rounded mx-1" @action="$router.push('/newproject')"><i class="bi bi-pencil"></i> Edit</button>
+                        <button class="nav-button rounded mx-1" @click="showAsigneeModal = true"><i class="bi bi-person"></i> Assign</button>
                         <button class="nav-button rounded mx-1">Close issue</button>
                         <button class="nav-button rounded mx-1">Stop issue</button>
                         <div class="dropdown mx-1">
@@ -22,13 +22,34 @@
                                 Actions
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <button class="dropdown-item" type="button">Backlog</button>
-                                <button class="dropdown-item" type="button">To Do</button>
-                                <button class="dropdown-item" type="button">In progress</button>
-                                <button class="dropdown-item" type="button">Done</button>
+                                <button class="dropdown-item" @click="updateStatus('Backlog')" type="button">Backlog</button>
+                                <button class="dropdown-item" @click="updateStatus('To Do')" type="button">To Do</button>
+                                <button class="dropdown-item" @click="updateStatus('In progress')" type="button">In progress</button>
+                                <button class="dropdown-item" @click="updateStatus('Done')" type="button">Done</button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Assign user to task -->
+                        <Teleport to="body">
+                            <!-- use the modal component, pass in the prop -->
+                            <FormPopUP :show="showAsigneeModal">
+                                <template #header>
+                                    <h3>Asign member</h3>
+                                </template>
+
+                                <template #body>
+                                    <label for="Asignee">Asignee</label>
+                                    <InputDropdownList v-model="inputMember" :memberList='project.projectMembers'/>
+
+                                </template>
+
+                                <template #footer>
+                                    <button class="btn btn-success" @click=acceptNewAsignee>Accept</button>
+                                    <button class="btn btn-danger"  @click="showAsigneeModal=false">Cancel</button>
+                                </template>
+                            </FormPopUP>
+                        </Teleport>
 
                     <!-- Details section -->
                     <div class="mx-2 my-4">
@@ -57,7 +78,7 @@
                     <div class="col mx-2">
                         <p>{{task.description}}</p>
                     </div>
-                    <!-- Attachments section-->
+                    <!--Log hours button and modal-->
                     <button id="show-modal" @click="showModal = true" class="btn btn-warning">Log hours</button>
 
                         <Teleport to="body">
@@ -75,14 +96,16 @@
                                     placeholder="Log hours"
                                     v-model.trim="input"
                                     >
+                                    <div v-if="errorHours!=''" class="text-danger">{{ errorHours }}</div>
                                 </template>
 
                                 <template #footer>
-                                    <button class="btn btn-success" @click=AcceptLogHours>Accept</button>
+                                    <button class="btn btn-success" @click=validateHours>Accept</button>
                                     <button class="btn btn-danger"  @click="showModal=false">Cancel</button>
                                 </template>
                             </FormPopUP>
                         </Teleport>
+
                     <!-- Activity section -->
                     <div class="mx-2 my-4">
                         <div class="col">
@@ -110,20 +133,28 @@
                         </div>
                         <div class="row">
                             <TaskViewRowInfo class='col-3' :params="'Created:'" />
-                            <TaskViewRowInfo class='col-3' :params="'05/June/19'" />
+                            <TaskViewRowInfo class='col-5' :params="formatDate(task.taskStartDate)" />
                         </div>
                         <div class="row">
-                            <TaskViewRowInfo class='col-3' :params="'Updated:'" />
-                            <TaskViewRowInfo class='col-3' :params="'22/September/19'" />
+                            <TaskViewRowInfo class='col-3' :params="'Start date:'" />
+                            <TaskViewRowInfo class='col-5' :params="formatDate(task.taskStartDate)" />
+
                         </div>
                         <div class="row">
-                            <TaskViewRowInfo class='col-3' :params="'Due to:'" />
-                            <TaskViewRowInfo class='col-3' :params="'22/January/21'" />
+                            <TaskViewRowInfo class='col-3' :params="'End date:'" />
+                            <TaskViewRowInfo class='col-5' :params="formatDate(task.taskEndDate)" />
                         </div>
 
                     </div>
                     <!-- Users section -->
-                    <TaskUserSection />
+                    <div class="my-4">
+                        <div class="col mx-2 my-2">
+                            <h5>People</h5>
+                        </div>
+                            <TaskUserSection :params="task.taskReporter" v-if="task.taskReporter" label='Reporter:'/>
+                            <TaskUserSection :params="task.taskAsignee" v-if="task.taskAsignee" label='Asignee:'/>
+                    </div>
+
 
                     <!-- Time tracking section -->
                     <div class="my-4">
@@ -132,7 +163,7 @@
                         </div>
                         <div class="col mx-2 d-flex flex-column my-1">
                             <TimeProgressBar title='Estimated' class='bg-info' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursAllocated}"/>
-                            <TimeProgressBar title='Remaining' class='bg-warning' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursRemainig}"/>
+                            <TimeProgressBar title='Remaining' class='bg-warning' :reverse=true :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursRemainig}"/>
                             <TimeProgressBar title='Logged' class='bg-success' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursLogged}"/>
                         </div>
                     </div>
@@ -152,11 +183,14 @@ import Header from '../components/ui/Header.vue'
 import SideBar from '../components/ui/SideBar.vue'
 import TaskUserSection from '../components/Task/taskUserSection.vue'
 import TimeProgressBar from '../components/Task/taskProgressBar.vue'
+import FormPopUP from '../components/FormPopUp.vue'
+import TaskViewRowInfo from '../components/Task/taskViewRowInfo.vue'
+import InputDropdownList from '../components/input/InputDropdownList.vue'
 import {useStore} from 'vuex'
 import { computed, onMounted } from '@vue/runtime-core'
 import { ref } from 'vue'
-import FormPopUP from '../components/FormPopUp.vue'
-import TaskViewRowInfo from '../components/Task/taskViewRowInfo.vue'
+import moment from 'moment'
+
 
 export default {
     components:{
@@ -165,23 +199,51 @@ export default {
         TaskUserSection,
         TimeProgressBar,
         FormPopUP,
-        TaskViewRowInfo
+        TaskViewRowInfo,
+        InputDropdownList
+    },
+    created: function () {
+      this.moment = moment;
     },
     setup(){
         const showModal = ref(false)
+        const showAsigneeModal = ref(false)
         const route = useRoute()
         const store = useStore()
         const taskId = route.params.id
-        // const task = ref([])
         const input = ref('')
+        const inputMember = ref('')
+        const errorHours = ref('')
+        
 
+        const formatDate = (date) => {
+          return moment(date).format("DD ddd/MMM/YYYY")
+        }
 
-
+        const validateHours = () => {
+            if(input.value > task.value.hoursAllocated || input.value<0)
+                errorHours.value = 'You cannot log in more hours than those assigned!'
+            else{
+                errorHours.value=''
+                AcceptLogHours()
+            }
+        }
         const AcceptLogHours = async () => {
             showModal.value = false
+            const remainingHours = task.value.hoursAllocated - input.value
+            const params = {id: taskId, hoursLogged: input.value, hoursRemaining: remainingHours}
+            await store.dispatch('updateTaskHours', params)
+        }
+
+        const acceptNewAsignee = async () => {
+            showAsigneeModal.value = false
             console.log(input)
-            const params = {id: taskId, hoursLogged: input.value}
-            await store.dispatch('updateTask', params)
+            if (inputMember.value == '')
+                inputMember.value = null
+            const params = {id: taskId, taskAsignee: inputMember.value}
+            console.log(params)
+            console.log(Object.keys(params), params)
+            await store.dispatch('updateTaskAsignee', params)
         }
 
         const task = computed (() => {
@@ -189,16 +251,25 @@ export default {
             return store.getters.getTask
         })
 
+        const project = computed (()=>{
+            return store.getters.getProject
+        })
 
-
+        const updateStatus = async (status) => {
+            const params = {id: taskId, status: status}
+            await store.dispatch('updateTaskStatus', params)
+        }
 
         onMounted(async () =>{
             await store.dispatch('fetchTask', taskId)
-            // task.value = store.getters.getTask
-            // console.log(task.value)
+            await store.dispatch('fetchProjectbyTask', taskId )
+
         })
 
-        return {task,showModal,input,AcceptLogHours}
+        return {
+            task,showModal,input, AcceptLogHours, formatDate, showAsigneeModal,
+            acceptNewAsignee, project, updateStatus, inputMember, errorHours, validateHours
+        }
     }
 
 }

@@ -7,10 +7,6 @@
           <div class="m-3 d-flex justify-content-between">
             <h4>My projects</h4>
             <btnIcon class="btn btn-info text-white mx-4" text='New project' icon='plus' @action="$router.push('/newproject')"/>
-
-            <!-- <router-link to="/newproject">
-              <button class="btn btn-info"><i class="bi bi-plus-lg mx-1"></i>New project</button>
-            </router-link> -->
           </div>
 
           <!-- <Navigator/>   -->

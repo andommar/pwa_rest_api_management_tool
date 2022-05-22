@@ -17,15 +17,11 @@ router.get('/', async (req, res) => {
 //Create new Project
 router.post('/new', verifyToken, async (req, res) => {
     
-    if(req.params.projectLeader) {
-        if(mongoose.Types.ObjectId.isValid(req.params.projectLeader)) {
-            const projectLeaderId = mongoose.Types.ObjectId(req.params.projectLeader)
-            req.params.projectLeader = projectLeaderId;
-        }
+    if(req.params.projectLeader == '') {
+        req.params.projectLeader = null
     }
     const newProject = new Project(
         req.body//What the vue app is sending throgh the routes
-        
 
         // {
         //     name: "Project test",
@@ -43,6 +39,17 @@ router.post('/new', verifyToken, async (req, res) => {
 //Getter by id
 router.get('/get/:id', async (req, res) => {
     const t = await Project.findById({ _id: req.params.id })
+    .populate("projectLeader")
+    .populate("projectMembers")
+    .populate("projectTasks")
+    res.json(t)
+})
+//return a project by searching a task
+router.get('/get/bytask/:id', async (req, res) => {
+    const t = await Project.findOne({ projectTasks: req.params.id })
+    .populate("projectLeader")
+    .populate("projectMembers")
+    .populate("projectTasks")
     res.json(t)
 })
 //Delete by id

@@ -1,27 +1,28 @@
 <template>
-<div class="my-4">
-    <div class="col mx-2 my-2">
-        <h5>People</h5>
+    <div class="col m-2 d-flex align-items-center">
+        <div  class="col-md-2">{{label}}</div>
+        <div class=" col-md-1 mx-2">
+            <img :src=params.avatar alt="asignee-avatar" class="img-fluid user-avatar">
+        </div>
+        <div class="col-md-6">{{ params.name }} {{params.surname}}</div>
     </div>
-    <div class="col mx-2 my-1 d-flex align-items-center">
-        <img src='../../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
-        <div class="px-2">Asignee:</div>
-        <div class="px-2">John Who</div>
-    </div>
-    <div class="col mx-2 my-1 d-flex align-items-center">
-        <img src='../../../public/images/avatars/monkey-user.png' alt="asignee-avatar" class="img-fluid user-avatar">
-        <div class="px-2">Reporter:</div>
-        <div class="px-2">Bubba gum</div>
-    </div>
-</div>
 </template>
 
 <script>
 export default {
+    props:['params', 'label'],
+    setup(props){
+        console.log(props.params)
+    }
 
 }
 </script>
 
-<style>
-
+<style scoped>
+img{
+    height: 32px;
+    width: auto;
+    background-color: rgb(253,104,20);
+    border-radius: 50%
+}
 </style>

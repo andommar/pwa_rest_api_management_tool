@@ -8,14 +8,14 @@
         placeholder="Insert name"
         v-model.trim="project.name"
         >
-    <label for="Project name">Description</label>
+    <label for="Project description">Description</label>
     <textarea 
         class="form-control my-2"
         placeholder="Insert description"
         v-model.trim="project.description"
         >
     </textarea>
-    <label for="Project name">Total hours</label>
+    <label for="Project hours">Total hours</label>
 
     <input 
         type="number"
@@ -23,7 +23,7 @@
         placeholder="Project total hours name"
         v-model.trim="project.totalhours"
         >
-    <label for="Project name">Start date</label>
+    <label for="Project start date">Start date</label>
 
     <input 
         type="date"
@@ -31,7 +31,7 @@
         placeholder="Project start date"
         v-model.trim="project.projectStartDate"
         >
-    <label for="Project name">End date</label>
+    <label for="Project end date">End date</label>
 
     <input 
         type="date"
@@ -40,15 +40,10 @@
         v-model.trim="project.projectEndDate"
         >
 
-    <label for="Project name">Project leader</label>
+    <label for="Project leader">Project leader</label>
+    <InputDropdownList v-model="project.projectLeader" :memberList='members'/>
 
-    <InputDropdownList 
-        v-model="project.projectLeader"
-        label='Project leader'
-        :memberList='members'/>
-
-    <label for="Project name">Project members</label>
-    
+    <label for="Project members">Project members</label>
     <Multiselect
             v-model="project.projectMembers"
             mode="tags"

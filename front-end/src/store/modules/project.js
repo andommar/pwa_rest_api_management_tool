@@ -49,6 +49,17 @@ export default ({
                 console.log(error)
             }
         },
+        async fetchProjectbyTask ({commit}, taskId) {
+            try {
+                const res = await fetch("http://localhost:3000/projects/get/bytask/"+taskId)
+                const data = await res.json()
+                console.log(data)
+                commit('setProject', data)
+            }
+            catch(error) {
+                console.log(error)
+            }
+        },
         async fetchProjects ({commit}) {
             try {
                 const res = await fetch("http://localhost:3000/projects")

@@ -9,7 +9,7 @@
                 <div class="my-4">
                     <h2>New project</h2>
                     <form @submit.prevent="processForm">
-                        <ProjectForm :project='project'/>
+                        <TaskForm :project='project'/>
                     </form>
                 </div>
             </div>
@@ -37,7 +37,7 @@ export default {
             description: '',
             template: '',
             projectTotalHoursAllocated: '',
-            projectLeader: null,
+            projectLeader: '',
             projectMembers: [],
             projectTasks: '',
             projectCreationDate: '',
@@ -53,12 +53,9 @@ export default {
             await store.dispatch('newProject', project)
             const projectDB = await store.getters.getProject
             const newProjectId = projectDB._id
-            if (projectDB.projectMembers){
-                const projectMembers = projectDB.projectMembers
-                console.log(projectMembers)
-                assignProject(projectMembers, newProjectId)
-            }
+            const projectMembers = projectDB.projectMembers
 
+            assignProject(projectMembers, newProjectId)
         }
 
         //for each member that has been assigned to the the new project
