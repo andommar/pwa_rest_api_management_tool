@@ -10,8 +10,8 @@ const ProjectSchema = new mongoose.Schema({
     projectMembers: [{ type: Schema.Types.ObjectId, ref: 'user', default: null}],
     projectTasks: [{ type: Schema.Types.ObjectId, ref: 'task', default: null }],
     projectCreationDate: {type: Date, required: false, default: Date.now},
-    projectStartDate:{type: Date, required: false},
-    projectEndDate:{type: Date, required: false}
+    projectStartDate:{type: Date, required: false, default: Date.now},
+    projectEndDate:{type: Date, required: false, default: Date.now}
 
 })
 

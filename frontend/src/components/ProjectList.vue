@@ -1,34 +1,42 @@
 <template>
-  <div class="project-list">
-    <router-link :to="{name: 'new project'}">
-        <button class="btn btn-light rounded mx-1 btn-outline-secondary">New project</button>
-    </router-link>
-    <div v-for="item in projectState.projects" :key="item._id">
-        <SingleProject :project='item' />
+  <div v-if="projects!=''" class="d-flex flex-wrap">
+    <div v-for="project in projects" :key="project._id">
+        <Project :project='project' />
     </div>
+  </div>
+  <div v-else class="d-flex flex-column flex-wrap align-items-center justify-content-center mt-4">
+      <div class="emoji">🤷</div>
+      <h2>You don't have any projects</h2>
   </div>
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
-import projectcrud from '../modules/projectcrud'
-import SingleProject from '../components/SingleProject.vue'
+import { computed, onMounted } from '@vue/runtime-core'
+import Project from '../components/Project.vue'
+import { useStore } from 'vuex'
 export default {
+    props:['projects'],
     components: {
-        SingleProject
+        Project
     },
-    setup() {
-    const {projectState, getAllprojects} = projectcrud()
+    setup(props) {
+        const store = useStore()
+        console.log(props.projects)
+        // const projects = computed(() => {
+        //     return store.getters.getProjects
+        // })
 
-    onMounted(()=> {
-        getAllprojects()
-    })
-    return {projectState }
+        onMounted(async ()=> {
+            await store.dispatch('fetchProjects')
+        })
+        return {  }
 
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.emoji{
+    font-size: 220px
+}
 </style>

@@ -5,7 +5,10 @@ const task = require('../models/Task')
 
 //Get all tasks routes
 router.get('/', async (req, res) => {
-    const tasks = await task.find(); //Returns all occurrences from datbase
+    const tasks = await task.find() //Returns all occurrences from datbase
+    .populate("taskReporter","-password")
+    .populate("taskAsignee", "-password")
+    .populate("taskMembers", "-password")
     res.json(tasks)
 })
 
@@ -41,16 +44,19 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
 
 //Update a task by id
 router.put('/update/:id', verifyToken, async (req, res) => {
-    const tUpdate = await task.updateOne(
+    const tUpdate = await task.findOneAndUpdate(
         { _id: req.params.id },
 
-        { $set: req.body }
+        { $set: req.body },
         // {
         //     name: "task test updated",
         //     description: "A long description text updated",
         //     template: "Template text",
         // }
+        {returnDocument: 'after'}
     )
+    .populate("taskAsignee")
+    .populate("taskReporter")
     res.json(tUpdate)
 })
 
