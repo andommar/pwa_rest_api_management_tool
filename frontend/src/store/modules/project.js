@@ -161,6 +161,7 @@ export default ({
                 const localToken = localStorage.getItem('token')
 
                 const updatedProject = params.updatedProject
+                console.log(updatedProject)
                 const result ={}
 
                 if(updatedProject.name)
@@ -171,6 +172,8 @@ export default ({
                     result.projectStartDate= updatedProject.projectStartDate
                 if(updatedProject.projectEndDate)
                     result.projectEndDate= updatedProject.projectEndDate
+                if(updatedProject.projectMembers)
+                    result.projectMembers= updatedProject.projectMembers
 
 
                 const requestOptions = {
