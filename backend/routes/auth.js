@@ -40,6 +40,7 @@ router.post("/register", async (req, res) => {
         surname: req.body.surname,
         email: req.body.email,
         username: req.body.username,
+        avatar: req.body.avatar,
         password
     });
 
@@ -98,11 +99,15 @@ router.post("/login", async (req, res) => {
         { expiresIn: process.env.JWT_EXPIRES_IN},
     )
 
+    const result = await User.findOne({email: req.body.email}).select("_id");
+
+
     //attach auth token to header
     res.header("auth-token", token).json({
         error: null,
-        data: { token }
+        data: { token, result }
     });
+
 });
 
 module.exports = router;

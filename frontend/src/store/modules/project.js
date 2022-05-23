@@ -20,6 +20,9 @@ export default ({
         },
         getFilteredTasks(state) {
             return state.filteredTasks
+        },
+        getFilteredProjects(state){
+            return state.filteredProjects
         }
     },
     mutations: {
@@ -34,10 +37,25 @@ export default ({
         },
         setFilteredTasks(state, payload) {
             state.filteredTasks = payload
+        },
+        setFilteredProjects(state, payload){
+            state.filteredProjects = payload
         }
 
     },
     actions: {
+        filterProject ({commit, state}, text){
+            console.log(text)
+            const textClient = text.toLowerCase()
+            console.log(textClient)
+            const filter = state.projects.filter(project =>{
+                const textServer = project.name.toLowerCase()
+                if(textServer.includes(textClient)){
+                    return project
+                }
+            })
+            commit ('setFilteredProjects', filter)
+        },
         async fetchProject ({commit}, projectId) {
             try {
                 const res = await fetch("http://localhost:3000/projects/get/"+projectId)
@@ -65,6 +83,7 @@ export default ({
                 const res = await fetch("http://localhost:3000/projects")
                 const data = await res.json()
                 commit('setProjects', data)
+                commit('setFilteredProjects', data)
             }
             catch(error) {
                 console.log(error)

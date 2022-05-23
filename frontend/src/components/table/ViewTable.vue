@@ -3,11 +3,9 @@
     <thead>
         <tr>
             <th>&nbsp;</th>
-            <th>&nbsp;</th>
             <th >Name</th>
             <th >Surname</th>
             <th >Email</th>
-            <th >Role</th>
             <th >Joined</th>
             <th>&nbsp;</th>
 
@@ -15,23 +13,24 @@
     </thead>
     <tbody>
         <tr v-for="user in users" :key="user._id">
-            <td>
+            <!-- <td>
                 <label class="checkbox-wrap checkbox-primary">
                     <input type="checkbox" :value="user._id">
                     <span class="checkmark"></span>
                 </label>
-            </td>
-            <TableTdImg class="user-icon" :image="`https://anonymous-animals.azurewebsites.net/avatar/`+user.name"/>
+            </td> -->
+            <TableTdImg class="user-icon" :image="user.avatar"/>
             <TableTdText :params="user.name"/>
             <TableTdText :params="user.surname"/>
             <TableTdText :params="user.email"/>
-            <TableTdText :params="user.role"/>
+            <TableTdText :params="formatDate(user.joined)"/>
  
-            <td class="status"><span class="active">24/June/2011</span></td>
             <td>
                 <div class="d-flex action-btns">
-                    <btnTableIcon class="btn btn-info text-white btn-sm" text='View' icon='person' @action="$router.push('/user/'+user._id)"/>
-                    <btnTableIcon class="btn btn-danger btn-sm" text='Delete' icon='trash' @action="deleteMember(user._id)"/>
+                    <template v-if="admin">
+                        <btnTableIcon class="btn btn-danger btn-sm" text='Delete' icon='trash' @action="deleteMember(user._id)"/>
+                    </template>
+                        <btnTableIcon class="btn btn-info text-white btn-sm" text='View' icon='person' @action="$router.push('/user/'+user._id)"/>
                 </div>
             </td>
         </tr>
@@ -46,30 +45,32 @@ import {useStore} from 'vuex'
 import TableTdText from './TableTdText.vue'
 import TableTdImg from './TableTdImg.vue'
 import btnTableIcon from '../input/btnIcon.vue'
+import moment from 'moment'
+
 
 export default {
+    props:['admin', 'users'],
     components:{
         TableTdText,
         TableTdImg,
         btnTableIcon
     },
-    async setup(){
+    created: function () {
+      this.moment = moment;
+    },
+    async setup(props){
         const store = useStore()
 
-        const users = computed(()=>{
-            return store.getters.getMembers
-        })
-
-        onMounted(async ()=>{
-            await store.dispatch('fetchMembers')
-        })
+        const formatDate = (date) => {
+          return moment(date).format("DD MMM, YYYY")
+        }
 
         const deleteMember = async (memberId) =>{
             await store.dispatch('deleteMember', memberId)
             await store.dispatch('fetchMembers')
         }
 
-        return {users, deleteMember}
+        return {deleteMember, formatDate}
     }
     
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid main-bg-color">
     <router-view/>
   </div>
   <!-- <nav>
@@ -15,6 +15,10 @@
 h1,h2,h3,h4,h5,h6{
   font-family: 'Archivo', sans-serif;
   color:black
+}
+.main-bg-color{
+    background-color: rgb(25,146,212);
+
 }
 main {
   background-color: rgb(226,232,240);

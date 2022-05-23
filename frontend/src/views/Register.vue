@@ -1,79 +1,123 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
-        <form
-          class="text-center border border-primary p-5"
-          style="margin-top:70px;height:auto;padding-top:100px !important;"
-          @submit.prevent="processForm"
-        >
-          <input
-            type="text"
-            id="name"
-            class="form-control mb-5"
-            placeholder="Name"
-            v-model.trim="name"
-          />
-          <input
-            type="text"
-            id="surname"
-            class="form-control mb-5"
-            placeholder="Surname"
-            v-model.trim="surname"
-          />
-          <input
-            type="email"
-            id="email"
-            class="form-control mb-5"
-            placeholder="Email"
-            v-model.trim="email"
-          />
-          <!-- Password -->
-          <input
-            type="password"
-            id="password"
-            class="form-control mb-5"
-            placeholder="Password"
-            v-model.trim="password"
-          />
-          <p>
-            Dont have an account?<router-link to="/register"
-              >click here</router-link
-            >
-          </p>
-          <!-- Sign in button -->
-            <button class="btn btn-primary btn-block w-75 my-4" type="submit">
-              Sign in
-            </button>
-        </form>
+
+<div class="center d-flex flex-column">
+  <h1 class="logo">Jrello</h1>
+        <div class="user-avatar">
+        <img :src="userAvatar" alt="">
       </div>
-    </div>
+      <div class="greetings-text">
+        Hello there {{ user.username }}!
+      </div>
+  <div class="form-box">
+    <form @submit.prevent="processForm" class="d-flex flex-column justify-content-center" >
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          placeholder="Name"
+          v-model.trim="user.name"
+        />
+        <label for="email">Surname</label>
+        <input
+          type="text"
+          id="surname"
+          class="form-control"
+          placeholder="Surname"
+          v-model.trim="user.surname"
+        />
+        <label for="email">Username</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          placeholder="Username"
+          v-model.trim="user.username"
+        />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Email"
+          v-model.trim="user.email"
+        />
+        <label for="email">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+          v-model.trim="user.password"
+        />
+
+      <!-- Sign in button -->
+        <button class="btn btn-warning btn-block my-2" type="submit">
+          Register
+        </button>
+        <div v-if=errors class="alert alert-danger" role="alert">{{errors}}</div>
+    </form>
   </div>
+
+</div>
 </template>
 
 <script>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {useStore} from 'vuex'
 export default {
     setup(){
-        const name = ref('')
-        const surname = ref('')
-        const email = ref('')
-        const password = ref('')
-        const store = useStore()
+      const store = useStore()
+      const user = ref([])
 
-        const processForm = () => {
-            const user = {name: name.value, surname: surname.value, email: email.value, password: password.value}
-            console.log(user)
-            store.dispatch('registerUser', user)
-        }
+      const errors = computed(()=>{
+        return store.getters.getRegisterError
+      })
 
-        return {name, surname,email, password,processForm}
+      const userAvatar = computed(()=>{
+        user.value.avatar = 'https://anonymous-animals.azurewebsites.net/avatar/'+user.value.username
+        return user.value.avatar
+      })
+
+
+      const processForm = () => {
+          console.log(user.value)
+          store.dispatch('registerUser', user.value)
+      }
+
+      return {user,processForm, userAvatar, errors}
     }
 
 }
 </script>
 
-<style>
+<style scoped>
+label {
+  font-size: 0.95rem;
+  color: white;
+  margin: 2px 0px
 
+}
+.greetings-text{
+  font-size: 2.5rem;
+  color: white;
+}
+.logo{
+  font-size: 3.5rem;
+  color: white
+}
+.center {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.form-box{
+  height: 150px;
+  width: 350px;
+}
+.login-footer{
+  color:white;
+  margin: 5px 0px;
+}
 </style>

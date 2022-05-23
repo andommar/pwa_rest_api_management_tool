@@ -1,9 +1,12 @@
 import router from '../../router'
 
+const URI = "http://localhost:3000/"
+// heroku = "https://jrelloapp.herokuapp.com/"
 
 export default ({
     state: {
-        user: null
+        user: null,
+        registerError: null
     },
     getters: {
         userAuthenticated(state){
@@ -12,19 +15,52 @@ export default ({
                 return true
             else
                 return false
-        }
+        },
+        isUserAdmin(state){
+            if(state.user.admin)
+                return true
+        },
+        getUserProjects(state){
+            return state.user.projectsAssigned
+        },
+        getUser(state) {
+            return state.user
+        },
+        getRegisterError(state) {
+            return state.registerError
+        },
     },
     mutations: {
         setUser (state, payload) {
             state.user = payload
+        },
+        setError (state, payload) {
+            state.registerError = payload
         }
     },
     actions: {
+        signOut ({commit}){
+            router.push('/login')
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+        },
+
         async loadLocalStorage({commit, state}) {
             if(localStorage.getItem('token')){
                 commit('setUser', localStorage.getItem('token'))
             } else {
                 return commit('setUser', null)
+            }
+        },
+        async fetchUser ({commit}, userId){
+            try {
+                const res = await fetch("http://localhost:3000/users/get/"+userId)
+                const data = await res.json()
+                commit('setUser', data)
+                console.log(data)
+            }
+            catch (error) {
+                console.log(error)
             }
         },
         async loginUser ({commit} , user ) {
@@ -47,8 +83,10 @@ export default ({
                     return console.log(userDB.error)
                 }
                 commit('setUser', userDB.data)
-                router.push('/')
                 localStorage.setItem('token', userDB.data.token)
+                localStorage.setItem('user', userDB.data.result._id)
+                router.push('/')
+                
             } catch (error) {
                 console.log(error)
             }
@@ -67,15 +105,22 @@ export default ({
                         name: user.name,
                         surname: user.surname,
                         email: user.email,
+                        username: user.username,
                         password: user.password,
+                        avatar: user.avatar,
                     })
                 }
                 const res = await fetch("http://localhost:3000/user/register", requestOptions)
 
                 const userDB = await res.json()
                 console.log(userDB)
-                // if(!userDB.error)
-                //     commit('setUser', userDB)
+                if(!userDB.error){
+                    commit('setUser', userDB)
+                    router.push('/login')
+                } else {
+                    commit('setError', userDB.error)
+                }
+
             } catch (error) {
                 console.log(error)
             }

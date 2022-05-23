@@ -8,9 +8,10 @@
             <h4>My projects</h4>
             <btnIcon class="btn btn-info text-white mx-4" text='New project' icon='plus' @action="$router.push('/newproject')"/>
           </div>
+          
 
           <!-- <Navigator/>   -->
-          <ProjectList />
+          <ProjectList :projects="userProjects"/>
         </main>
       </div>
 </div>
@@ -33,6 +34,18 @@ export default {
     const store = useStore()
     store.dispatch('loadLocalStorage')
 
+    const userProjects = computed(()=>{
+      return store.getters.getUserProjects
+    })
+
+    console.log(userProjects)
+
+    onMounted(async()=>{
+        const userId = localStorage.getItem('user')
+        store.dispatch('fetchUser', userId)
+    })
+
+    return {userProjects}
   }
 }
 </script>

@@ -23,6 +23,7 @@ router.get('/', async (req, res) => {
 //Getter by id
 router.get('/get/:id', async (req, res) => {
     const t = await User.findById({ _id: req.params.id })
+    .populate('projectsAssigned')
     res.json(t)
 })
 //Delete by id

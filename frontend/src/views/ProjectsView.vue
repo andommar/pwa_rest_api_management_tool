@@ -8,7 +8,9 @@
                 <h4>Projects</h4>
             </div>
             <div class="row m-4">
-                <!-- <div v-if="errMsg"> {{error}}</div> -->
+                <div class="mb-4">
+                    <searchBar v-model="text" @action ="processSearch"/>
+                </div>
                 <Suspense>
                     <template #default>
                     <table class="table table-responsive-xl bg-white rounded shadow-card">
@@ -42,8 +44,10 @@
                                 <TableTdText :params="'NodeJs'"/>
                                 <td>
                                     <div class="d-flex action-btns">
-                                        <btnTableIcon class="btn btn-info text-white btn-sm mx-2" text='View' icon='kanban' @action="$router.push('/task/'+project._id)"/>
-                                        <btnTableIcon class="btn btn-danger btn-sm mx-2" text='Delete' icon='trash' @action="deleteProject(project._id)"/>
+                                        <btnTableIcon class="btn btn-info text-white btn-sm mx-2" text='View' icon='kanban' @action="$router.push('/project/'+project._id)"/>
+                                        <template v-if="isAdmin">
+                                            <btnTableIcon class="btn btn-danger btn-sm mx-2" text='Delete' icon='trash' @action="deleteProject(project._id)"/>
+                                        </template>
                                     </div>
                                 </td>
                             </tr>
@@ -69,7 +73,9 @@ import ViewTable from '../components/table/ViewTable.vue'
 import TableTdText from '../components/table/TableTdText.vue'
 import TableTdImg from '../components/table/TableTdImg.vue'
 import btnTableIcon from '../components/input/btnIcon.vue'
+import searchBar from '../components/input/searchBar.vue'
 import {useStore} from 'vuex'
+import {ref} from 'vue'
 import { computed, onMounted } from '@vue/runtime-core'
 import moment from 'moment'
 
@@ -80,7 +86,8 @@ export default {
         ViewTable,
         TableTdText,
         TableTdImg,
-        btnTableIcon
+        btnTableIcon,
+        searchBar
     },
     created: function () {
       this.moment = moment;
@@ -88,9 +95,12 @@ export default {
     setup(){
         const store = useStore()
         const defaultAvatar = 'https://anonymous-animals.azurewebsites.net/animal/Dinosaur'
+        const isAdmin = ref(store.getters.isUserAdmin)
+        const text = ref('')
+
 
         const projects = computed(()=>{
-            return store.getters.getProjects
+            return store.getters.getFilteredProjects
         })
 
         const formatDate = (date) => {
@@ -104,6 +114,8 @@ export default {
 
         onMounted(async ()=>{
             await store.dispatch('fetchProjects')
+            const userId = localStorage.getItem('user')
+            await store.dispatch('fetchUser', userId)
         })
 
         const deleteProject = async (projectId) =>{
@@ -111,7 +123,15 @@ export default {
             await store.dispatch('fetchProjects')
         }
 
-        return {projects, deleteProject,formatDate, getProjectLeader, getUserAvatar}
+        const processSearch = () =>{
+            console.log(text.value)
+            store.dispatch('filterProject', text.value)
+        }
+
+        return {
+            projects, deleteProject,formatDate, isAdmin, processSearch,
+            getProjectLeader, getUserAvatar, text
+        }
     }
 }
 </script>

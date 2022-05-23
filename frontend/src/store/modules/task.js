@@ -2,7 +2,8 @@
 export default ({
     state: {
         task: [],
-        tasks:[]
+        tasks:[],
+        filteredTasks: []
     },
     getters: {
         getTask(state){
@@ -10,6 +11,9 @@ export default ({
         },
         getTasks(state){
             return state.tasks
+        },
+        getFilteredTask(state){
+            return state.filteredTasks
         }
     },
     mutations: {
@@ -18,14 +22,30 @@ export default ({
         },
         setTasks(state, payload) {
             state.tasks = payload
-        }
+        },
+        setFilteredTasks(state, payload) {
+            state.filteredTasks = payload
+        },
     },
     actions: {
+        filterTask ({commit, state}, text){
+            console.log(text)
+            const textClient = text.toLowerCase()
+            const filter = state.tasks.filter(task =>{
+                const textServer = task.title.toLowerCase()
+                if(textServer.includes(textClient)){
+                    return task
+                }
+            })
+            commit ('setFilteredTasks', filter)
+        },
         async fetchTasks ({commit}){
             try {
                 const res = await fetch('http://localhost:3000/tasks')
                 const data = await res.json()
                 commit('setTasks', data)
+                commit('setFilteredTasks', data)
+
             } catch(error) {
                 console.log(error)
             }

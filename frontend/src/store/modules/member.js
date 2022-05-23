@@ -2,7 +2,8 @@
 export default ({
     state: {
         member: [],
-        members: []
+        members: [],
+        filteredMembers: []
     },
     getters: {
         getMember(state){
@@ -10,6 +11,9 @@ export default ({
         },
         getMembers(state){
             return state.members
+        },
+        getFilteredMembers(state){
+            return state.filteredMembers
         }
     },
     mutations: {
@@ -18,9 +22,25 @@ export default ({
         },
         setMembers(state, payload) {
             state.members = payload
+        },
+        setFilteredMembers(state, payload){
+            state.filteredMembers = payload
         }
     },
     actions: {
+        filterMember ({commit, state}, text){
+            console.log(text)
+            const textClient = text.toLowerCase()
+            const filter = state.members.filter(member =>{
+                const textServerName = member.name.toLowerCase()
+                const textServerSurname = member.surname.toLowerCase()
+                const textFullName = textServerName+' '+textServerSurname
+                if(textFullName.includes(textClient)){
+                    return member
+                }
+            })
+            commit ('setFilteredMembers', filter)
+        },
         async fetchMember ({commit}, memberId){
             try {
                 const res = await fetch("http://localhost:3000/users/get/"+memberId)
@@ -37,6 +57,7 @@ export default ({
                 const res = await fetch("http://localhost:3000/users")
                 const data = await res.json()
                 commit('setMembers', data)
+                commit('setFilteredMembers', data)
                 console.log(data)
             }
             catch (error) {
