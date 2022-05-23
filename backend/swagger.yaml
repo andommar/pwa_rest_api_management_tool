@@ -1,0 +1,642 @@
+openapi: 3.0.0
+info:
+  title: PWA project management tool
+  description: MongoDB ExpressJS NodeJS REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/
+    description: Localhost development server 
+  - url: https://jrelloapp.herokuapp.com/
+    description: Heroku remote server
+tags:
+- name: "User"
+- name: "Project"
+- name: "Task"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: auth-token
+
+  schemas:
+   
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        avatar:
+          type: string
+        projectsAssigned:
+          type: array
+        joined:
+          type: string
+        active:
+          type: boolean
+        admin:
+          type: boolean
+
+    Task:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        hoursAllocated:
+          type: number
+        hoursLogged:
+          type: number
+        hoursRemainig:
+          type: number
+        taskKanbanStatus:
+          type: string
+        is_closed:
+          type: boolean
+        taskMembers:
+          type: array
+        taskReporter:
+          type: string
+        taskAsignee:
+          type: string
+        taskCreation:
+          type: string
+        taskStartDate:
+          type: string
+        taskEndDate:
+          type: string
+
+    Project:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        template:
+          type: string
+        projectTotalHoursAllocated:
+          type: number
+        projectLeader:
+          type: string
+        projectMembers:
+          type: array
+        projectTasks:
+          type: array
+        projectCreationDate:
+          type: string
+        projectStartDate:
+          type: string
+        projectEndDate:
+          type: string
+
+
+paths:
+
+  /user/register:
+    post:
+      tags:
+      - "User"
+      summary: Register a new User
+      description: Register a new User in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        201:
+          description: User created succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  _id:
+                    type: string
+
+  /user/login:
+    post:
+      tags:
+      - "User"
+      summary: Login a User
+      description: Login a User in order to get JWT token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      
+      responses:
+        200:
+          description: User logged in succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  data:
+                    type: array
+
+  /users:
+    get:
+      tags:
+      - "User"
+      summary: Retrieves a list of users
+      description: Retrieves a list of users as JSON objects.
+      responses:
+        200:
+          description: A list of teams users objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    
+    post:
+      tags:
+      - "User"
+      summary: Create a new User
+      description: Create a new User
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        201:
+          description: User created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      tags:
+      - "User"
+      summary: Specific User
+      description: Retrieves a specific User based on its id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A User in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        404:
+          description: 404 error message user id was not found
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+        
+  /users/update/{id}:
+    put:
+      tags:
+      - "User"
+      summary: Updates a specific User
+      description: Updates a specific User based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        201:
+          description: User updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: User id succesfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /users/delete/{id}:
+    delete:
+      tags:
+      - "User"
+      summary: Deletes a specific User
+      description: Deletes a specific User based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string      
+
+      responses:
+        201:
+          description: User deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: 404 error message User id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /tasks:
+    get:
+      tags:
+      - "Task"
+      summary: Retrieves a list of Tasks
+      description: Retrieves a list of Tasks as JSON objects.
+      responses:
+        200:
+          description: A list of Tasks JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+  /tasks/new:  
+    post:
+      tags:
+      - "Task"
+      summary: Create a new Task
+      description: Create a new Task
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Task"
+
+      responses:
+        201:
+          description: Task created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+
+  /tasks/get/{id}:
+    get:
+      tags:
+      - "Task"
+      summary: Specific Task
+      description: Retrieves a specific Task based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A Task in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        404:
+          description: 404 error message Task id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /tasks/update/{id}: 
+    put:
+      tags:
+      - "Task"
+      summary: Updates a specific Task
+      description: Updates a specific Task based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Task"
+
+      responses:
+        201:
+          description: Task updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        404:
+          description: 404 error message Task id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /tasks/delete/{id}:
+    delete:
+      tags:
+      - "Task"
+      summary: Deletes a specific Task
+      description: Deletes a specific Task based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string      
+
+      responses:
+        201:
+          description: Task deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        404:
+          description: 404 error message Task id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /projects:
+    get:
+      tags:
+      - "Project"
+      summary: Retrieves a list of Projects
+      description: Retrieves a list of Projects as JSON objects.
+      responses:
+        200:
+          description: A list of Projects JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+  /projects/new:  
+    post:
+      tags:
+      - "Project"
+      summary: Create a new Project
+      description: Create a new Project
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+
+      responses:
+        201:
+          description: Project created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /projects/get/{id}:
+    get:
+      tags:
+      - "Project"
+      summary: Specific Project
+      description: Retrieves a specific Project based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A Project in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+        404:
+          description: 404 error message project id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+  
+  /projects/get/{id}/tasks:
+    get:
+      tags:
+      - "Project"
+      summary: Project tasks
+      description: Retrieves the tasks from Project based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A Project in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+        404:
+          description: 404 error message project id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+  
+  /projects/get/bytask/{id}:
+    get:
+      tags:
+      - "Project"
+      summary: Project tasks
+      description: Retrieves a project by searching an assigned task to it.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A Project in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+        404:
+          description: 404 error message task id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /projects/update/{id}: 
+    put:
+      tags:
+      - "Project"
+      summary: Updates a specific Project
+      description: Updates a specific Project based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+
+      responses:
+        201:
+          description: Project updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        404:
+          description: 404 error message Project id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+  /projects/delete/{id}:
+    delete:
+      tags:
+      - "Project"
+      summary: Deletes a specific Project
+      description: Deletes a specific Project based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string      
+
+      responses:
+        201:
+          description: Project deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        404:
+          description: 404 error message Project id was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+
+        

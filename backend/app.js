@@ -5,7 +5,12 @@ const bodyParser = require("body-parser")
 
 require ("dotenv").config();
 
+//swagger dependencies
+const swaggerUi = require('swagger-ui-express')
+const yaml = require('yamljs')
 
+//setup swagger
+const swaggerDefinition = yaml.load('./swagger.yaml')
 //create out express app
 const app = express()
 
@@ -16,6 +21,8 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "auth-token, Origin, X-Requested-Width, Content-Type, Accept");
     next();
 })
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition))
+
 
 // database stuff
 const uri = "mongodb+srv://dbuser:W1x0nMani12@cluster0.hvicc.mongodb.net/db_management_tool?retryWrites=true&w=majority"
@@ -31,9 +38,9 @@ mongoose.connect(uri, {
 app.use(bodyParser.json())
 
 //routes
-app.get("/", (res, req) => {
-    res.send("Home page")
-})
+// app.get("/", (res, req) => {
+//     res.send("Home page")
+// })
 
 const ProjectsRoute = require ('./routes/Projects');
 app.use('/projects', ProjectsRoute)
