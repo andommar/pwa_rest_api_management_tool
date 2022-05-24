@@ -1,5 +1,6 @@
-# pwa_rest_api_management_tool
 
+# Jrello
+Jrello is a project management tool inspired by Trello and Jira. The app is done in Vue3 + Vuex state management
 ## Project setup
 ```
 npm install
