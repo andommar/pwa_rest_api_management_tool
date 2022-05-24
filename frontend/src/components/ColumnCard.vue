@@ -7,21 +7,20 @@
             <TaskCard :task='task'/>
           </div>
         </div>
-          <router-link  style="text-decoration: none; color: inherit;" :to="{name: 'newtask', params:{status: columnStatus, project: project._id, tasksArr: JSON.stringify(tasks)}}">
             <div class="d-grid gap-2 m-2">
-              <button class="btn btn-warning btn-sm">
+              <button class="btn btn-warning btn-sm" :disabled="!isUserProjectMember"
+              @click="$router.push({name: 'newtask', params:{status: columnStatus, project: project._id, tasksArr: JSON.stringify(tasks)}})">
                 <i class="bi bi-plus-circle"></i>
                 New task
               </button>
             </div>
-          </router-link>
           <!-- {{ project._id }} -->
       </div>
     </div>
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
+import { onMounted, computed } from '@vue/runtime-core'
 import {useStore} from 'vuex'
 import TaskCard from './TaskCard.vue'
 import {ref} from 'vue'
@@ -37,15 +36,23 @@ export default {
       const project = ref({})
       const route = useRoute()
       const projectId = route.params.id
+      const projectMembers = ref([])
+
+      const isUserProjectMember = computed(()=>{
+        const projectMembersId = projectMembers.value.map(member=>member._id)
+        const userId = store.getters.getUserIdFromStorage
+
+        return projectMembersId.includes(userId)
+      })
 
       onMounted(async ()=>{
-        
         await store.dispatch('fetchProject', projectId)
         project.value = await store.getters.getProject
+        projectMembers.value = store.getters.getProjectMembers
       })
 
 
-      return {project}
+      return {project, isUserProjectMember}
     }
 }
 </script>

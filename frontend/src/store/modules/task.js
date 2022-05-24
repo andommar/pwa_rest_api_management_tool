@@ -1,4 +1,6 @@
 
+const URL = 'https://jrelloapp.herokuapp.com/'
+//http://localhost:3000/
 export default ({
     state: {
         task: [],
@@ -41,7 +43,7 @@ export default ({
         },
         async fetchTasks ({commit}){
             try {
-                const res = await fetch('http://localhost:3000/tasks')
+                const res = await fetch(URL+'tasks')
                 const data = await res.json()
                 commit('setTasks', data)
                 commit('setFilteredTasks', data)
@@ -52,7 +54,7 @@ export default ({
         },
         async fetchTask ({commit}, taskId){
             try {
-                const res = await fetch("http://localhost:3000/tasks/get/"+taskId)
+                const res = await fetch(URL+"tasks/get/"+taskId)
                 const data = await res.json()
                 commit('setTask', data)
                 console.log(data)
@@ -89,7 +91,7 @@ export default ({
                         result
                     )
                 }
-                const res = await fetch("http://localhost:3000/tasks/update/"+task.id, requestOptions)
+                const res = await fetch(URL+"tasks/update/"+task.id, requestOptions)
                 const data = res.json()
                 data.then(res=>{
                     if(!res.error)
@@ -113,7 +115,7 @@ export default ({
                         hoursRemainig: task.hoursRemaining
                     })
                 }
-                const res = await fetch("http://localhost:3000/tasks/update/"+task.id, requestOptions)
+                const res = await fetch(URL+"tasks/update/"+task.id, requestOptions)
                 const data = res.json()
                 data.then(res=>{
                     if(!res.error)
@@ -138,7 +140,7 @@ export default ({
                         taskAsignee: params.taskAsignee
                     })
                 }
-                const res = await fetch("http://localhost:3000/tasks/update/"+params.id, requestOptions)
+                const res = await fetch(URL+"tasks/update/"+params.id, requestOptions)
                 const data = await res.json()
                 console.log(data)
                 if(!data.error)
@@ -162,7 +164,7 @@ export default ({
                         taskKanbanStatus: params.status
                     })
                 }
-                const res = await fetch("http://localhost:3000/tasks/update/"+params.id, requestOptions)
+                const res = await fetch(URL+"tasks/update/"+params.id, requestOptions)
                 const data = await res.json()
                 console.log(data)
                 if(!data.error)
@@ -195,7 +197,7 @@ export default ({
                     })
 
                 }
-                const res = await fetch('http://localhost:3000/tasks/new',requestOptions)
+                const res = await fetch(URL+'tasks/new',requestOptions)
                 const taskDB = await res.json()
                 console.log(taskDB)
                 if(!taskDB.error){}
@@ -215,7 +217,7 @@ export default ({
                         "auth-token": localToken
                     },
                 }
-            const res = await fetch('http://localhost:3000/tasks/delete/'+taskId, requestOptions)
+            const res = await fetch(URL+'tasks/delete/'+taskId, requestOptions)
             const data = res.json()
             console.log(data)
             } catch (error) {

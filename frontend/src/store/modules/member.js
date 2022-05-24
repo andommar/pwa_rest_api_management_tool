@@ -1,9 +1,12 @@
+const URL = 'https://jrelloapp.herokuapp.com/'
+//http://localhost:3000/
 
 export default ({
     state: {
         member: [],
         members: [],
-        filteredMembers: []
+        filteredMembers: [],
+
     },
     getters: {
         getMember(state){
@@ -14,6 +17,9 @@ export default ({
         },
         getFilteredMembers(state){
             return state.filteredMembers
+        },
+        getMemberProjects(state){
+            return state.filteredMembers.projectsAssigned
         }
     },
     mutations: {
@@ -43,7 +49,7 @@ export default ({
         },
         async fetchMember ({commit}, memberId){
             try {
-                const res = await fetch("http://localhost:3000/users/get/"+memberId)
+                const res = await fetch(URL+"users/get/"+memberId)
                 const data = await res.json()
                 commit('setMember', data)
                 console.log(data)
@@ -54,7 +60,7 @@ export default ({
         },
         async fetchMembers ({commit}){
             try {
-                const res = await fetch("http://localhost:3000/users")
+                const res = await fetch(URL+"users")
                 const data = await res.json()
                 commit('setMembers', data)
                 commit('setFilteredMembers', data)
@@ -71,6 +77,7 @@ export default ({
                     method: "PUT",
                     headers: {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     },
                     body: JSON.stringify({
@@ -79,7 +86,7 @@ export default ({
                         email: member.email
                     })
                 }
-                const res = await fetch("http://localhost:3000/users/update/"+member.id, requestOptions)
+                const res = await fetch(URL+"users/update/"+member.id, requestOptions)
                 const data = await res.json()
                 console.log(data)
                 if(!data.error)
@@ -97,13 +104,14 @@ export default ({
                     method: "PUT",
                     headers: {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     },
                     body: JSON.stringify({
                         projectsAssigned: params.projectsAssigned
                     })
                 }
-                const res = await fetch("http://localhost:3000/users/update/"+params.id, requestOptions)
+                const res = await fetch(URL+"users/update/"+params.id, requestOptions)
                 const data = await res.json()
                 console.log(data)
 
@@ -118,10 +126,11 @@ export default ({
                     method: "DELETE",
                     headers : {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     }
                 }
-                const res = await fetch("http://localhost:3000/users/delete/"+memberId, requestOptions)
+                const res = await fetch(URL+"users/delete/"+memberId, requestOptions)
                 const data = await res.json()
                 console.log(data)
             } catch (error) {

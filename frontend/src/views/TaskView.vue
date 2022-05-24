@@ -15,8 +15,12 @@
                     <div class="d-flex m-2">
                         <button class="nav-button rounded mx-1" @click="showEditTaskModal= true"><i class="bi bi-pencil"></i> Edit</button>
                         <button class="nav-button rounded mx-1" @click="showAsigneeModal = true"><i class="bi bi-person"></i> Assign</button>
-                        <button class="nav-button rounded mx-1">Close issue</button>
-                        <button class="nav-button rounded mx-1">Stop issue</button>
+                        <template v-if="task.is_closed">
+                            <button class="nav-button rounded mx-1">Open task</button>
+                        </template>
+                        <template v-else>
+                            <button class="nav-button rounded mx-1">Close task</button>
+                        </template>
                         <div class="dropdown mx-1">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Actions
@@ -34,21 +38,21 @@
                     <div class="mx-2 my-4">
                         <h4> Details</h4>
                         <div class="row">
-                            <TaskViewRowInfo class='col-2' :params="'Priority:'" />
-                            <TaskViewRowInfo class='col-3' :params="'High'" />
+                            <!-- <TaskViewRowInfo class='col-2' :params="'Priority:'" />
+                            <TaskViewRowInfo class='col-3' :params="'High'" /> -->
+                            <TaskViewRowInfo class='col-2' :params="'Status:'" />
+                            <TaskViewRowInfo class='col-3' :params="task.is_closed==false ? 'Open': 'Closed'" />
                             <TaskViewRowInfo class='col-2' :params="'Progress:'" />
                             <TaskViewRowInfo class='col-3' :params="task.taskKanbanStatus" />
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <TaskViewRowInfo class='col-2' :params="'Label:'" />
                             <TaskViewRowInfo class='col-3' :params="'Bug'" />
-                            <TaskViewRowInfo class='col-2' :params="'Status:'" />
-                            <TaskViewRowInfo class='col-3' :params="'Open'" />
-                        </div>
-                        <div class="row">
+                        </div> -->
+                        <!-- <div class="row">
                             <TaskViewRowInfo class='col-2' :params="'Type:'" />
                             <TaskViewRowInfo class='col-3' :params="'Marketing and Sales'" />
-                        </div>
+                        </div> -->
                     </div>
                     <!-- Description section -->
                     <div class="col m-2">
@@ -57,12 +61,11 @@
                     <div class="col mx-2">
                         <p>{{task.description}}</p>
                     </div>
-                    <!--Log hours button and modal-->
-                    <button id="show-modal" @click="showModal = true" class="btn btn-warning">Log hours</button>
+
 
 
                     <!-- Activity section -->
-                    <div class="mx-2 my-4">
+                    <!-- <div class="mx-2 my-4">
                         <div class="col">
                             <h5>Activity</h5>
                         </div>
@@ -76,7 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Right card -->
@@ -120,6 +123,10 @@
                             <TimeProgressBar title='Estimated' class='bg-info' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursAllocated}"/>
                             <TimeProgressBar title='Remaining' class='bg-warning' :reverse=true :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursRemainig}"/>
                             <TimeProgressBar title='Logged' class='bg-success' :hours="{totalHours:task.hoursAllocated, hoursValue:task.hoursLogged}"/>
+                        </div>
+                                            <!--Log hours button and modal-->
+                        <div class="col-md-10 d-flex justify-content-end mr-4">
+                            <button id="show-modal" @click="showModal = true" class="btn btn-warning">Log hours</button>
                         </div>
                     </div>
 

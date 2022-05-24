@@ -4,7 +4,7 @@
       <div class="row">
         <SideBar/>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="row">
+            <div class="row m-4">
                 <h4>Projects</h4>
             </div>
             <div class="row m-4">
@@ -20,7 +20,6 @@
                                 <th>Name</th>
                                 <th>Project Leader</th>
                                 <th>Creation date</th>
-                                <th>Technologies</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
@@ -41,7 +40,6 @@
                                 <TableTdText :params="formatDate(project.projectCreationDate)"/>
                                     <!-- <td v-if="task.taskAsignee">{{task.taskAsignee}}</td> -->
                                 <!-- <TableTdText :params="task.taskAsignee"/> -->
-                                <TableTdText :params="'NodeJs'"/>
                                 <td>
                                     <div class="d-flex action-btns">
                                         <btnTableIcon class="btn btn-info text-white btn-sm mx-2" text='View' icon='kanban' @action="$router.push('/project/'+project._id)"/>

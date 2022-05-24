@@ -1,7 +1,7 @@
 import router from '../../router'
 
-const URI = "http://localhost:3000/"
-// heroku = "https://jrelloapp.herokuapp.com/"
+const URL = 'https://jrelloapp.herokuapp.com/'
+//http://localhost:3000/
 
 export default ({
     state: {
@@ -10,7 +10,6 @@ export default ({
     },
     getters: {
         userAuthenticated(state){
-            console.log('autenticated',state.user)
             if(state.user || localStorage.getItem('token'))
                 return true
             else
@@ -29,6 +28,10 @@ export default ({
         getRegisterError(state) {
             return state.registerError
         },
+        getUserIdFromStorage(){
+            const user = localStorage.getItem('user')
+            return user
+        }
     },
     mutations: {
         setUser (state, payload) {
@@ -45,6 +48,8 @@ export default ({
             localStorage.removeItem('token')
         },
 
+
+
         async loadLocalStorage({commit, state}) {
             if(localStorage.getItem('token')){
                 commit('setUser', localStorage.getItem('token'))
@@ -54,10 +59,9 @@ export default ({
         },
         async fetchUser ({commit}, userId){
             try {
-                const res = await fetch("http://localhost:3000/users/get/"+userId)
+                const res = await fetch(URL+"users/get/"+userId)
                 const data = await res.json()
                 commit('setUser', data)
-                console.log(data)
             }
             catch (error) {
                 console.log(error)
@@ -68,7 +72,8 @@ export default ({
                 const requestOptions = {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                     },
                     body: JSON.stringify ({
                         email: user.email,
@@ -76,7 +81,7 @@ export default ({
 
                     })
                 }
-                const res = await fetch('http://localhost:3000/user/login', requestOptions)
+                const res = await fetch(URL+'user/login', requestOptions)
                 const userDB = await res.json()
                 // console.log(userDB.data.token)
                 if(userDB.error){
@@ -99,6 +104,7 @@ export default ({
                     headers: {
                         //if we dont put this in sometimes it might not accept the data
                         "Content-Type": "application/json"
+                        
                         //"auth-token": state.token --use tokens
                     },
                     body: JSON.stringify({ //stringify gets the data and converts it into json instance
@@ -110,7 +116,7 @@ export default ({
                         avatar: user.avatar,
                     })
                 }
-                const res = await fetch("http://localhost:3000/user/register", requestOptions)
+                const res = await fetch(URL+"user/register", requestOptions)
 
                 const userDB = await res.json()
                 console.log(userDB)

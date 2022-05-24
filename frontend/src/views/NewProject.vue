@@ -25,13 +25,15 @@ import SideBar from '../components/ui/SideBar.vue'
 import ProjectForm from '../components/ProjectForm.vue'
 import {useStore} from 'vuex'
 import { onMounted } from '@vue/runtime-core'
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
+
 export default {
     components:{
         Header, SideBar, ProjectForm
     },
     setup(){
         const store = useStore()
+        const router = useRouter()
         const project = {
             name: '',
             description: '',
@@ -50,6 +52,7 @@ export default {
         //we call a function to assign the project
         const processForm = async () => {
             // console.log(project)
+            project.projectMembers.push(project.projectLeader)
             await store.dispatch('newProject', project)
             const projectDB = await store.getters.getProject
             const newProjectId = projectDB._id
@@ -58,7 +61,7 @@ export default {
                 console.log(projectMembers)
                 assignProject(projectMembers, newProjectId)
             }
-
+            router.push('/')
         }
 
         //for each member that has been assigned to the the new project

@@ -4,7 +4,7 @@
       <div class="row">
         <SideBar/>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="row">
+            <div class="row m-4">
                 <h4>Users</h4>
             </div>
             <div class="row m-4">

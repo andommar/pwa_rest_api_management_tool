@@ -1,5 +1,5 @@
-import { renderSlot } from "vue"
-
+const URL = 'https://jrelloapp.herokuapp.com/'
+//http://localhost:3000/
 export default ({
     state: {
         project: {},
@@ -23,6 +23,9 @@ export default ({
         },
         getFilteredProjects(state){
             return state.filteredProjects
+        },
+        getProjectMembers(state){
+            return state.project.projectMembers
         }
     },
     mutations: {
@@ -58,7 +61,7 @@ export default ({
         },
         async fetchProject ({commit}, projectId) {
             try {
-                const res = await fetch("http://localhost:3000/projects/get/"+projectId)
+                const res = await fetch(URL+"projects/get/"+projectId)
                 const data = await res.json()
                 console.log(data)
                 commit('setProject', data)
@@ -69,7 +72,7 @@ export default ({
         },
         async fetchProjectbyTask ({commit}, taskId) {
             try {
-                const res = await fetch("http://localhost:3000/projects/get/bytask/"+taskId)
+                const res = await fetch(URL+"projects/get/bytask/"+taskId)
                 const data = await res.json()
                 console.log(data)
                 commit('setProject', data)
@@ -80,7 +83,7 @@ export default ({
         },
         async fetchProjects ({commit}) {
             try {
-                const res = await fetch("http://localhost:3000/projects")
+                const res = await fetch(URL+"projects")
                 const data = await res.json()
                 commit('setProjects', data)
                 commit('setFilteredProjects', data)
@@ -91,7 +94,7 @@ export default ({
         },
         async fetchProjectTasks ({commit}, projectId) {
             try {
-                const res = await fetch("http://localhost:3000/projects/get/"+projectId+"/tasks")
+                const res = await fetch(URL+"projects/get/"+projectId+"/tasks")
                 const data = await res.json()
                 console.log(data.projectTasks)
                 commit('setTasks', data.projectTasks)
@@ -114,6 +117,7 @@ export default ({
                     headers: {
                         //if we dont put this in sometimes it might not accept the data
                         "Content-Type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     },
                     body: JSON.stringify({ //stringify gets the data and converts it into json instance
@@ -127,7 +131,7 @@ export default ({
                         projectLeader: project.projectLeader
                     })
                 }
-                const res = await fetch("http://localhost:3000/projects/new", requestOptions)
+                const res = await fetch(URL+"projects/new", requestOptions)
                 const projectDB = await res.json()
                 console.log(projectDB)
                 if(!projectDB.error)
@@ -143,13 +147,14 @@ export default ({
                     method: "PUT",
                     headers: {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     },
                     body: JSON.stringify({
                         projectTasks: params.tasksID
                     })
                 }
-                const res = await fetch("http://localhost:3000/projects/update/"+params.id, requestOptions)
+                const res = await fetch(URL+"projects/update/"+params.id, requestOptions)
                 const data = res.json()
                 console.log(data)
             } catch (error) {
@@ -161,6 +166,7 @@ export default ({
                 const localToken = localStorage.getItem('token')
 
                 const updatedProject = params.updatedProject
+                console.log(updatedProject)
                 const result ={}
 
                 if(updatedProject.name)
@@ -171,17 +177,20 @@ export default ({
                     result.projectStartDate= updatedProject.projectStartDate
                 if(updatedProject.projectEndDate)
                     result.projectEndDate= updatedProject.projectEndDate
+                if(updatedProject.projectMembers)
+                    result.projectMembers= updatedProject.projectMembers
 
 
                 const requestOptions = {
                     method: "PUT",
                     headers: {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     },
                     body: JSON.stringify(result)
                 }
-                const res = await fetch("http://localhost:3000/projects/update/"+params.id, requestOptions)
+                const res = await fetch(URL+"projects/update/"+params.id, requestOptions)
                 const data = res.json()
                 data.then(res=>{
                     if(!res.error){
@@ -199,10 +208,11 @@ export default ({
                     method: "DELETE",
                     headers: {
                         "Content-type": "application/json",
+                        // "Host": 'https://*.herokuapp.com',
                         "auth-token": localToken
                     }
                 }
-                const res = await fetch('http://localhost:3000/projects/delete/'+projectId, requestOptions)
+                const res = await fetch(URL+'projects/delete/'+projectId, requestOptions)
                 const data = await res.json()
                 console.log(data)
             } catch (error) {

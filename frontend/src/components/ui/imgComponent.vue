@@ -17,6 +17,7 @@ props:['imageSrc']
 
 }
 .bg-color{
-    background-color:red
+  background-color: rgb(253,104,20);
+
 }
 </style>
