@@ -42,7 +42,7 @@ import {computed, ref} from 'vue'
 import {useStore} from 'vuex'
 export default {
     setup(){
-        const user = ref({email: 'HappyMan@gmail.com', password: '1234567'})
+        const user = ref({email: '', password: ''})
         const store = useStore()
 
         const processLogin = () => {
