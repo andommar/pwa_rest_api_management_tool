@@ -1,0 +1,8 @@
+[{
+    "name": "New project with project leader",
+    "description": "A new project with project leader",
+    "projectTasks": ["62569d4bf06d41b8420caeca", "62569e02aa1628bce12a6ecb"],
+    "projectMembers": ["62569bafaeee9581f89f0dac", "62569c0ac184dd3e05bf84c2"],
+    "projectTotalHoursAllocated": 200,
+    "projectLeader": "62569bafaeee9581f89f0dac"
+}]

@@ -1,62 +1,62 @@
 <template>
-
-
-      <main class="flex flex-col w-full bg-white overflow-x-hidden overflow-y-auto mb-14">
-        <div class="flex justify-around">
-          <!-- Input -->
-          <!-- <input type="text" placeholder="Project" v-model="state.newProject">
-          <br>
-          <span>Test: {{ state.newProject }}</span>
-          <button @click="newProject()">New project - static</button>  -->
-
-          <ProjectList />
-          <!-- <div v-for="project in state.projects" :key="project._id">
-            <router-link :to="{name: 'project single', params: {id: project._id}}">
-              <h4>
-                {{ project.name }}
-              </h4>
-              <p>
-                {{ project.description }}
-              </p>-->
-              <!-- <button @click="editProject(project._id)">Edit project - static</button> -->
-            <!--</router-link>
-              <button @click="deleteProject(project._id)">Delete project - static</button>
-
-              <br>
-              <br>
-          </div> -->
-        </div>
-      </main>
-
+<div>
+      <Header/>
+      <div class="row">
+        <SideBar/>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div class="m-3 d-flex justify-content-between">
+            <h4>My projects</h4>
+            <btnIcon class="btn btn-info text-white mx-4" text='New project' icon='plus' @action="$router.push('/newproject')"/>
+          </div>
+          <template v-if="userProjects!=''">
+            <ProjectList :projects="userProjects"/>
+          </template>
+          <template v-else>
+            <div class="d-flex flex-column flex-wrap align-items-center justify-content-center mt-2 mb-4">
+              <div class="emoji">🤷</div>
+              <h3>You don't have any projects</h3>
+            </div>
+          </template>
+        </main>
+      </div>
+</div>
 </template>
 
 <script>
-// @ is an alias to /src
-import SideBar from '../components/ui/SideBar/SideBar'
-import Header from '../components/ui/Header/Header'
-import Card from "../components/Card.vue"
-import {onMounted} from 'vue'
-import projectcrud from '../modules/projectcrud'
-import ProjectList from '../components/ProjectList.vue'
+import { computed, onMounted } from '@vue/runtime-core'
 
+import Header from '../components/ui/Header.vue'
+import SideBar from '../components/ui/SideBar.vue'
+import ProjectList from '../components/ProjectList.vue'
+import btnIcon from '../components/input/btnIcon.vue'
+import {useStore} from 'vuex'
 export default {
   name: 'HomeView',
   components: {
-    SideBar,
-    Header,
-    Card,
-    ProjectList
+    Header, SideBar, ProjectList, btnIcon
   },
+  setup(){
+    const store = useStore()
+    store.dispatch('loadLocalStorage')
 
-
-    setup() {
-
-    const {state, getAllprojects, newProject, deleteProject, editProject} = projectcrud()
-
-    onMounted(()=>{
-      getAllprojects()
+    const userProjects = computed(()=>{
+      return store.getters.getUserProjects
     })
-    return { state, getAllprojects, newProject, deleteProject, editProject }
+
+    console.log(userProjects)
+
+    onMounted(async()=>{
+        const userId = localStorage.getItem('user')
+        store.dispatch('fetchUser', userId)
+    })
+
+    return {userProjects}
   }
 }
 </script>
+
+<style scoped>
+.emoji{
+    font-size: 150px
+}
+</style>

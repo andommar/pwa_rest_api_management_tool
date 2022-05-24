@@ -1,27 +1,31 @@
 <template>
-  <div class="project-list">
-      <div class="grid grid-cols-2"></div>
-      <div v-for="item in state.projects" :key="item._id">
-          <SingleProject :project='item' />
-      </div>
+  <div class="d-flex flex-wrap">
+    <div v-for="project in projects" :key="project._id">
+        <Project :project='project' />
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
-import projectcrud from '../modules/projectcrud'
-import SingleProject from '../components/SingleProject.vue'
+import { computed, onMounted } from '@vue/runtime-core'
+import Project from '../components/Project.vue'
+import { useStore } from 'vuex'
 export default {
+    props:['projects'],
     components: {
-        SingleProject
+        Project
     },
     setup() {
-    const {state, getAllprojects} = projectcrud()
+        const store = useStore()
 
-    onMounted(()=> {
-        getAllprojects()
-    })
-    return {state }
+        // const projects = computed(() => {
+        //     return store.getters.getProjects
+        // })
+
+        onMounted(async ()=> {
+            // await store.dispatch('fetchProjects')
+        })
+        return {  }
 
     }
 }
