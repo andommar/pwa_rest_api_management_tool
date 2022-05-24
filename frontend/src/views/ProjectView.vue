@@ -15,8 +15,8 @@
                 </div>
               </div>
               <div class="col-md-4 d-flex justify-content-end">
-                <btnIcon class="btn btn-info text-white mx-4" text='Edit project' icon='pencil' @click="showEditProjectModal = true"/>
-                <btnIcon class="btn btn-info text-white mx-4" text='Add members' icon='plus' @action="showAddMemberModal = true"/>
+                <btnIcon :disabled="!isUserProjectMember" class="btn btn-info text-white mx-4" text='Edit project' icon='pencil' @click="showEditProjectModal = true"/>
+                <btnIcon :disabled="!isUserProjectMember" class="btn btn-info text-white mx-4" text='Add members' icon='plus' @action="showAddMemberModal = true"/>
               </div>
             </div>
 
@@ -141,6 +141,8 @@ export default {
       const showEditProjectModal = ref(false)
       const projectId = route.params.id
       const optionsMultiselect = ref([])
+      const membersList = ref([])
+
 
 
       const filteredTasks = ref({Backlog: [], ToDo:[], InProgress:[], Done:[]})
@@ -180,21 +182,31 @@ export default {
       }
 
 
+      const isUserProjectMember = computed(()=>{
+        const projectMembersId = membersList.value.map(member=>member._id)
+        const userId = store.getters.getUserIdFromStorage
 
+        return projectMembersId.includes(userId)
+      })
 
 
     onMounted(async ()=> {
+      //fetch project and filters the tasks regarding their status
         await store.dispatch('fetchProject', projectId)
         tasks.value = await store.getters.getProject.projectTasks
         filteredTasks.value.Backlog = tasks.value.filter(task=> task.taskKanbanStatus.includes('Backlog'))
         filteredTasks.value.ToDo = tasks.value.filter(task=> task.taskKanbanStatus.includes('To Do'))
         filteredTasks.value.InProgress = tasks.value.filter(task=> task.taskKanbanStatus.includes('In Progress'))
         filteredTasks.value.Done = tasks.value.filter(task=> task.taskKanbanStatus.includes('Done'))
+        
+        
         await store.dispatch('fetchMembers')
-
+        //fetch DB users and map them into a value, label object for the dropdown component
         const data = await store.getters.getMembers
         optionsMultiselect.value = data.map(member =>({"value": member._id, "label": member.name+ " " +member.surname}))
         console.log(optionsMultiselect)
+
+        membersList.value = await store.getters.getProjectMembers
 
     })
 
@@ -202,7 +214,7 @@ export default {
     return {
       tasks, project, filteredTasks, showEditProjectModal, showAddMemberModal,
       inputProject, acceptEditProject, projectMembers, inputMembers, optionsMultiselect,
-      acceptAddMember
+      acceptAddMember, isUserProjectMember, membersList
     }
   }
 }

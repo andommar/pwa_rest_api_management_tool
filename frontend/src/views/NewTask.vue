@@ -23,7 +23,7 @@
 import Header from '../components/ui/Header.vue'
 import SideBar from '../components/ui/SideBar.vue'
 import TaskForm from '../components/TaskForm.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import {useStore} from 'vuex'
 
 
@@ -32,6 +32,7 @@ export default {
     setup(){
         const route = useRoute()
         const store = useStore()
+        const router = useRouter()
 
 
         //
@@ -63,6 +64,7 @@ export default {
             await tasksID.push(newTaskId)
             const params = {tasksID: tasksID, id: projectId}
             await store.dispatch('updateProjectTask', params)
+            router.push({ name: 'project', params: {id: projectId}})
         }
 
         return {task, processForm}

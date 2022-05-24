@@ -8,10 +8,15 @@
             <h4>My projects</h4>
             <btnIcon class="btn btn-info text-white mx-4" text='New project' icon='plus' @action="$router.push('/newproject')"/>
           </div>
-          
-
-          <!-- <Navigator/>   -->
-          <ProjectList :projects="userProjects"/>
+          <template v-if="userProjects!=''">
+            <ProjectList :projects="userProjects"/>
+          </template>
+          <template v-else>
+            <div class="d-flex flex-column flex-wrap align-items-center justify-content-center mt-2 mb-4">
+              <div class="emoji">🤷</div>
+              <h3>You don't have any projects</h3>
+            </div>
+          </template>
         </main>
       </div>
 </div>
@@ -51,5 +56,7 @@ export default {
 </script>
 
 <style scoped>
-
+.emoji{
+    font-size: 150px
+}
 </style>
